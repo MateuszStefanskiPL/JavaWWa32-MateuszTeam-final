@@ -53,7 +53,7 @@ public class Movie {
     private double movieAverageRating;
 
     @NotNull
-    @Column(name = "status")
+    @Column(name = "movie_status")
     private MovieStatus movieStatus;
 
 
