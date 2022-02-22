@@ -1,61 +1,49 @@
-package mateuszteam.final_project.domain;
+package mateuszteam.final_project.domain.dto;
 
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import mateuszteam.final_project.domain.dao.MovieStatus;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
-@Entity
-@Table(name = "movies")
-public class Movie {
+@NoArgsConstructor
+@Data
+public class MovieDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Setter(AccessLevel.NONE)
-    @Column(name = "movie_id")
+    @NotNull
     private long movieId;
 
 
     @NotEmpty
     @NotNull
     @Size(min = 1, max = 250)
-    @Column(name= "title")
     private String movieTitle;
 
 
     @NotNull
-    @Column(name = "year_of_prod")
     private int yearOfProd;
 
     @NotEmpty
     @NotNull
     @Size(min = 2, max = 100)
-    @Column(name = "director")
     private String director;
 
     @NotEmpty
     @NotNull
-    @Column(name = "starring")
     private String starring;
 
     @NotNull
-    @Column(name = "copies")
     private int numberOfCopies;
 
     @NotNull
-    @Column(name = "rating")
     private double movieAverageRating;
 
     @NotNull
-    @Column(name = "movie_status")
     private MovieStatus movieStatus;
-
-
-
 }

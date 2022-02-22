@@ -1,28 +1,31 @@
-package mateuszteam.final_project.domain;
+package mateuszteam.final_project.domain.dao;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "copies")
-public class MovieCopy {
+@Table(name = "rating")
+public class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "copy_id")
-    private long copyId;
+    @Column(name = "rating_id")
+    public long ratingId;
 
-    @NotNull
+    @Column(name = "user_id")
+    private long userId;
+
     @Column(name = "movie_id")
     private long movieId;
 
-    @Column(name = "order_id")
-    private long orderId;
+    @Column(name = "rating")
+    private double ratingScore;
+
+
 }

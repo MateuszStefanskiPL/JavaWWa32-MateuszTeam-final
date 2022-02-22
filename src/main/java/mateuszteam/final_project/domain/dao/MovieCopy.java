@@ -1,4 +1,4 @@
-package mateuszteam.final_project.domain;
+package mateuszteam.final_project.domain.dao;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,26 +10,18 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @Entity
-@Table(name = "rating")
-public class Rating {
+@Table(name = "copies")
+public class MovieCopy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "rating_id")
-    public long ratingId;
+    @Column(name = "copy_id")
+    private long copyId;
 
-    @NotNull
-    @Column(name = "user_id")
-    private long userId;
-
-    @NotNull
     @Column(name = "movie_id")
     private long movieId;
 
-    @NotNull
-    @Column(name = "rating")
-    private double ratingScore;
-
-
+    @Column(name = "order_id")
+    private long orderId;
 }

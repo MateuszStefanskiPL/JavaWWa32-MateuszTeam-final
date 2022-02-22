@@ -1,4 +1,4 @@
-package mateuszteam.final_project.domain;
+package mateuszteam.final_project.domain.dao;
 
 public enum UserStatus {
 
