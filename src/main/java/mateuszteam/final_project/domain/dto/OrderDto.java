@@ -1,9 +1,6 @@
 package mateuszteam.final_project.domain.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import mateuszteam.final_project.domain.dao.OrderStatus;
 
 import javax.persistence.Column;
@@ -12,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class OrderDto {

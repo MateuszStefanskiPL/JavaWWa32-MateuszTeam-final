@@ -1,12 +1,10 @@
 package mateuszteam.final_project.domain.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class MovieCopyDto {

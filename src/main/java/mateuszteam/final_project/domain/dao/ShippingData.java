@@ -1,8 +1,15 @@
 package mateuszteam.final_project.domain.dao;
 
+import lombok.*;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 @Embeddable
 public class ShippingData {
 

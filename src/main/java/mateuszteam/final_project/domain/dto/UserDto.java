@@ -1,9 +1,6 @@
 package mateuszteam.final_project.domain.dto;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import mateuszteam.final_project.domain.dao.ShippingData;
 import mateuszteam.final_project.domain.dao.UserStatus;
 
@@ -12,6 +9,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class UserDto {
@@ -36,4 +35,6 @@ public class UserDto {
 
     @NotNull
     private UserStatus userStatus;
+
+
 }

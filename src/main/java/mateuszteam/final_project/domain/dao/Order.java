@@ -1,13 +1,13 @@
 package mateuszteam.final_project.domain.dao;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -26,6 +26,7 @@ public class Order {
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
+    @Enumerated
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
