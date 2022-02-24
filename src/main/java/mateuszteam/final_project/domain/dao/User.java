@@ -9,13 +9,13 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Setter
-@Entity
 @Table(name = "users")
+@Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
+//    @Setter(AccessLevel.NONE)
     @Column(name = "user_id")
     private Long userId;
 

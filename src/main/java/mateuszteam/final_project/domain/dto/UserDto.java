@@ -16,7 +16,8 @@ import javax.validation.constraints.Size;
 public class UserDto {
 
 
-    @Setter(AccessLevel.NONE)
+
+//    @Setter(AccessLevel.NONE)
     @NotNull
     private Long userId;
 

@@ -23,6 +23,7 @@ public class Order {
     @Column(name = "user_id")
     private long userId;
 
+
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
