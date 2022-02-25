@@ -4,6 +4,7 @@ import lombok.*;
 import mateuszteam.final_project.domain.dao.ShippingData;
 import mateuszteam.final_project.domain.dao.UserStatus;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ public class UserDto {
 
 
 
-//    @Setter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @NotNull
     private Long userId;
 
@@ -34,6 +35,7 @@ public class UserDto {
     @NotNull
     private ShippingData shippingData;
 
+    @NotEmpty
     @NotNull
     private UserStatus userStatus;
 

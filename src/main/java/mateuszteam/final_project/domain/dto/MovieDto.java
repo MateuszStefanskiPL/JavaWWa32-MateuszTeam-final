@@ -1,6 +1,7 @@
 package mateuszteam.final_project.domain.dto;
 
 import lombok.*;
+import mateuszteam.final_project.domain.dao.Genre;
 import mateuszteam.final_project.domain.dao.MovieStatus;
 
 import javax.validation.constraints.NotEmpty;
@@ -23,9 +24,11 @@ public class MovieDto {
     @Size(min = 1, max = 250)
     private String movieTitle;
 
-
     @NotNull
     private int yearOfProd;
+
+    @NotNull
+    private Genre genre;
 
     @NotEmpty
     @NotNull

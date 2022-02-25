@@ -6,10 +6,13 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface MovieMapStructMapper extends MapperInterface<Movie, MovieDto>{
+public interface MovieMapStructMapper{
+
 
     Movie mapFromDtoToDomain(MovieDto movieDto);
 
     @InheritInverseConfiguration
     MovieDto mapFromDomainToDto(Movie movie);
+
+
 }

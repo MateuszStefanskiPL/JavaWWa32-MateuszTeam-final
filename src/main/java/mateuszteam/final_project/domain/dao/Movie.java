@@ -21,6 +21,10 @@ public class Movie {
     @Column(name= "title")
     private String movieTitle;
 
+    @Enumerated
+    @Column(name = "genre")
+    private Genre genre;
+
     @Column(name = "year_of_prod")
     private int yearOfProd;
 
