@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@Embeddable
+@Entity
 public class Address {
 
     @Id

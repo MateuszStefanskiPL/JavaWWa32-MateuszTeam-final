@@ -3,7 +3,6 @@ package mateuszteam.final_project.domain.entities;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

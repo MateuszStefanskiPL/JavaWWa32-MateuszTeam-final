@@ -31,9 +31,6 @@ public class UserDto {
     @Size(min = 8, max = 1000)
     private String password;
 
-    @NotNull
-    private Address address;
-
     @NotEmpty
     @NotNull
     private UserStatus userStatus;

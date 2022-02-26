@@ -25,9 +25,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Embedded
-    private Address address;
-
     @Enumerated
     @Column(name = "user_status")
     private UserStatus userStatus;
