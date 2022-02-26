@@ -4,8 +4,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class MovieCopyDto {
 

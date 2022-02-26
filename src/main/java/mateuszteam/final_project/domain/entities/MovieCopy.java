@@ -4,8 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -15,14 +17,14 @@ public class MovieCopy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "copy_id")
+    @Column(name = "id")
     private long copyId;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id")
+    @JoinColumn(name = "movie_id",referencedColumnName = "id")
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    private MoviesOrder moviesOrder;
 }

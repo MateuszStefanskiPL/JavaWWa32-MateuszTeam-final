@@ -6,8 +6,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class AddressDto {
 
@@ -34,4 +35,6 @@ public class AddressDto {
     @NotNull
     @Size(min = 5, max = 50)
     private String phone;
+
+
 }

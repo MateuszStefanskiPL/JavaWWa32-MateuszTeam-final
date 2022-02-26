@@ -8,10 +8,11 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
-public class OrderDto {
+public class MoviesOrderDto {
 
     @NotNull
     @Setter(AccessLevel.NONE)

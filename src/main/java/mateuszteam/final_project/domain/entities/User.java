@@ -4,8 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter
@@ -16,17 +16,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long userId;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password")
     private String password;
 
     @Enumerated
-    @Column(name = "user_status")
+    @Column(name = "status")
     private UserStatus userStatus;
 
 

@@ -3,9 +3,11 @@ package mateuszteam.final_project.domain.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @Entity
@@ -15,7 +17,7 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    @Column(name = "movie_id")
+    @Column(name = "id")
     private long movieId;
 
     private String title;
@@ -23,26 +25,20 @@ public class Movie {
     @Enumerated
     private Genre genre;
 
-    @Column(name = "year_of_prod")
-    private int yearOfProd;
+    private LocalDate releaseDate;
 
-    @Column(name = "director")
     private String director;
 
-    @Column(name = "starring")
     private String starring;
 
     @Column(name = "copies")
     private int numberOfCopies;
 
-//    @OneToMany(mappedBy = "movie")
-//    private List<MovieCopy> copies;
-
-    @Column(name = "rating")
+    @Column(name = "score")
     private double averageScore;
 
     @Enumerated
-    @Column(name = "movie_status")
+    @Column(name = "status")
     private MovieStatus movieStatus;
 
 

@@ -7,17 +7,17 @@ import mateuszteam.final_project.domain.entities.MovieStatus;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Data
 public class MovieDto {
-
 
     @Setter(AccessLevel.NONE)
     @NotNull
     private long movieId;
-
 
     @NotEmpty
     @NotNull
@@ -25,7 +25,7 @@ public class MovieDto {
     private String movieTitle;
 
     @NotNull
-    private int yearOfProd;
+    private LocalDate releaseDate;
 
     @NotNull
     private Genre genre;
