@@ -19,10 +19,10 @@ public class Rating {
     public long ratingId;
 
     @Column(name = "user_id")
-    private long userId;
+    private User user;
 
     @Column(name = "movie_id")
-    private long movieId;
+    private Movie movie;
 
     @Column(name = "rating")
     private double ratingScore;

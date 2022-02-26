@@ -20,8 +20,9 @@ public class Order {
     @Column(name = "order_id")
     private long orderId;
 
-    @Column(name = "user_id")
-    private long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     @Column(name = "order_date")

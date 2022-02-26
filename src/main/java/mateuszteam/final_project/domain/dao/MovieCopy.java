@@ -18,9 +18,11 @@ public class MovieCopy {
     @Column(name = "copy_id")
     private long copyId;
 
+
     @Column(name = "movie_id")
-    private long movieId;
+    private Movie movie;
+
 
     @Column(name = "order_id")
-    private long orderId;
+    private Order order;
 }
