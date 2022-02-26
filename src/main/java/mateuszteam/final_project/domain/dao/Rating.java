@@ -18,10 +18,12 @@ public class Rating {
     @Column(name = "rating_id")
     public long ratingId;
 
-    @Column(name = "user_id")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "movie_id")
+    @OneToOne
+    @JoinColumn(name = "movie_id")
     private Movie movie;
 
     @Column(name = "rating")

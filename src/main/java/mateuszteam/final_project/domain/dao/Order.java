@@ -25,8 +25,9 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    List<MovieCopy> movieCopies;
-
+    @ManyToMany
+    @JoinColumn(name = "copy_id")
+    private List<MovieCopy> movieCopies;
 
     @Column(name = "order_date")
     private LocalDateTime orderDate;

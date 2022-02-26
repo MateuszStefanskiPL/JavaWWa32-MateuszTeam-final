@@ -22,7 +22,7 @@ public class MovieCopy {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 }

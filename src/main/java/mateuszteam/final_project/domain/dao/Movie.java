@@ -3,6 +3,7 @@ package mateuszteam.final_project.domain.dao;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,6 +37,9 @@ public class Movie {
 
     @Column(name = "copies")
     private int numberOfCopies;
+
+    @OneToMany(mappedBy = "movie")
+    private List<MovieCopy> copies;
 
     @Column(name = "rating")
     private double movieAverageRating;
