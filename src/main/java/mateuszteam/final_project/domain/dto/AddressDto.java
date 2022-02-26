@@ -1,8 +1,6 @@
 package mateuszteam.final_project.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,22 +9,21 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ShippingDataDto {
+public class AddressDto {
+
+    @NotNull
+    @Setter(AccessLevel.NONE)
+    private Long addressId;
 
     @NotEmpty
     @NotNull
     @Size(min = 3, max = 250)
-    private String nameAndSurname;
+    private String fullName;
 
     @NotEmpty
     @NotNull
-    @Size(min = 3, max = 100)
-    private String postCode;
-
-    @NotEmpty
-    @NotNull
-    @Size(min = 3, max = 100)
-    private String city;
+    @Size(min = 3, max = 250)
+    private String addressLine2;
 
     @NotEmpty
     @NotNull

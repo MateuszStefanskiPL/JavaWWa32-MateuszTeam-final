@@ -1,6 +1,6 @@
 package mateuszteam.final_project.repository;
 
-import mateuszteam.final_project.domain.dao.Movie;
+import mateuszteam.final_project.domain.entities.Movie;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package mateuszteam.final_project.domain.dao;
+package mateuszteam.final_project.domain.entities;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

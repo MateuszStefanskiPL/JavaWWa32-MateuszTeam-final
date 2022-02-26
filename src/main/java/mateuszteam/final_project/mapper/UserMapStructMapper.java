@@ -1,8 +1,8 @@
 package mateuszteam.final_project.mapper;
 
-import mateuszteam.final_project.domain.dao.ShippingData;
-import mateuszteam.final_project.domain.dao.User;
-import mateuszteam.final_project.domain.dto.ShippingDataDto;
+import mateuszteam.final_project.domain.entities.Address;
+import mateuszteam.final_project.domain.entities.User;
+import mateuszteam.final_project.domain.dto.AddressDto;
 import mateuszteam.final_project.domain.dto.UserDto;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -15,9 +15,9 @@ public interface UserMapStructMapper {
     @InheritInverseConfiguration
     UserDto mapFromDomainToDto(User user);
 
-    ShippingData shippingDataDtoToShippingData(ShippingDataDto shippingDataDto);
+    Address mapAddressDtoToAddress(AddressDto addressDto);
 
     @InheritInverseConfiguration
-    ShippingDataDto shippingDataToShippingDataDto(ShippingData shippingData);
+    AddressDto mapAddressToAddressDto(Address address);
 
 }

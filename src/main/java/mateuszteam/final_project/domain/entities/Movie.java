@@ -1,4 +1,4 @@
-package mateuszteam.final_project.domain.dao;
+package mateuszteam.final_project.domain.entities;
 
 import lombok.*;
 
@@ -19,11 +19,9 @@ public class Movie {
     @Column(name = "movie_id")
     private long movieId;
 
-    @Column(name= "title")
-    private String movieTitle;
+    private String title;
 
     @Enumerated
-    @Column(name = "genre")
     private Genre genre;
 
     @Column(name = "year_of_prod")
@@ -38,11 +36,11 @@ public class Movie {
     @Column(name = "copies")
     private int numberOfCopies;
 
-    @OneToMany(mappedBy = "movie")
-    private List<MovieCopy> copies;
+//    @OneToMany(mappedBy = "movie")
+//    private List<MovieCopy> copies;
 
     @Column(name = "rating")
-    private double movieAverageRating;
+    private double averageScore;
 
     @Enumerated
     @Column(name = "movie_status")

@@ -1,4 +1,4 @@
-package mateuszteam.final_project.domain.dao;
+package mateuszteam.final_project.domain.entities;
 
 import lombok.*;
 
@@ -18,16 +18,17 @@ public class Rating {
     @Column(name = "rating_id")
     public long ratingId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
-    @Column(name = "rating")
-    private double ratingScore;
+    private double score;
+
+    private String text;
 
 
 }

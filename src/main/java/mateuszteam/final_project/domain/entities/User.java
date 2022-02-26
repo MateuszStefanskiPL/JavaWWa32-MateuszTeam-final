@@ -1,4 +1,4 @@
-package mateuszteam.final_project.domain.dao;
+package mateuszteam.final_project.domain.entities;
 
 import lombok.*;
 
@@ -26,7 +26,7 @@ public class User {
     private String password;
 
     @Embedded
-    private ShippingData shippingData;
+    private Address address;
 
     @Enumerated
     @Column(name = "user_status")

@@ -1,11 +1,11 @@
-package mateuszteam.final_project.domain.dao;
+package mateuszteam.final_project.domain.entities;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,19 +25,18 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinColumn(name = "copy_id")
-    private List<MovieCopy> movieCopies;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
+    private Set<MovieCopy> movieCopies;
 
-    @Column(name = "order_date")
-    private LocalDateTime orderDate;
+    @Column(name = "order_placed_date")
+    private LocalDateTime orderPlacedDate;
 
     @Enumerated
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @Column(name = "return_date")
-    private LocalDateTime dateOfReturn;
+    @Column(name = "status_change_date")
+    private LocalDateTime statusChangeDate;
 
     @Column(name = "price")
     private BigDecimal price;

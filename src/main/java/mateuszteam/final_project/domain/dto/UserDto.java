@@ -1,10 +1,9 @@
 package mateuszteam.final_project.domain.dto;
 
 import lombok.*;
-import mateuszteam.final_project.domain.dao.ShippingData;
-import mateuszteam.final_project.domain.dao.UserStatus;
+import mateuszteam.final_project.domain.entities.Address;
+import mateuszteam.final_project.domain.entities.UserStatus;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -33,7 +32,7 @@ public class UserDto {
     private String password;
 
     @NotNull
-    private ShippingData shippingData;
+    private Address address;
 
     @NotEmpty
     @NotNull

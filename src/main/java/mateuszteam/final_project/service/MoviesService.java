@@ -1,7 +1,7 @@
 package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
-import mateuszteam.final_project.domain.dao.Movie;
+import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.dto.MovieDto;
 import mateuszteam.final_project.mapper.MovieMapStructMapper;
 import mateuszteam.final_project.repository.MoviesRepository;

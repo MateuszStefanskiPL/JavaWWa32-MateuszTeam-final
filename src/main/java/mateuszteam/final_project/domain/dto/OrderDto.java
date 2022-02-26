@@ -1,9 +1,8 @@
 package mateuszteam.final_project.domain.dto;
 
 import lombok.*;
-import mateuszteam.final_project.domain.dao.OrderStatus;
+import mateuszteam.final_project.domain.entities.OrderStatus;
 
-import javax.persistence.Column;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
