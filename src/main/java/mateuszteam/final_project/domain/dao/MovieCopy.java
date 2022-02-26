@@ -19,10 +19,12 @@ public class MovieCopy {
     private long copyId;
 
 
-    @Column(name = "movie_id")
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
     private Movie movie;
 
 
+    @OneToOne
     @Column(name = "order_id")
     private Order order;
 }
