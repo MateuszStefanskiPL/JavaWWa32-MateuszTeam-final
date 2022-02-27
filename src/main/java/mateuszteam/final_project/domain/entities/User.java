@@ -28,7 +28,6 @@ public class User {
     @Column(name = "status")
     private UserStatus userStatus;
 
-
 }
 
 

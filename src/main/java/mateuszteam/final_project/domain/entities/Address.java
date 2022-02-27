@@ -17,16 +17,16 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     @Column(name = "address_id")
-    private Long addressId;
+    private Long id;
 
     private String fullName;
     private String addressLine1;
     private String addressLine2;
     private String phone;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User  user;
 
 
 }

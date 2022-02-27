@@ -59,9 +59,6 @@ class OrdersRepositoryTest {
         Assertions.assertThat(foundOrderOptional.isPresent());
         Assertions.assertThat(foundOrder.getUser()).isNotNull();
         Assertions.assertThat(foundOrder.getUser().getEmail()).isEqualTo(user.getEmail());
-
-
-
     }
 
     @Test
