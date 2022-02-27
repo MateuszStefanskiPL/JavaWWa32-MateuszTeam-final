@@ -1,14 +1,14 @@
 package mateuszteam.final_project.repository;
 
 import mateuszteam.final_project.domain.entities.MoviesOrder;
-import mateuszteam.final_project.domain.entities.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+@Repository
+public interface OrdersRepository extends JpaRepository<MoviesOrder, Long> {
 
-public interface OrdersRepository extends CrudRepository<MoviesOrder, Long> {
-
-    //todo napisać metodę ktora pobierze Usera z Order
-
+    Page<MoviesOrder> findByUser_userId(Long id , Pageable pageable);
 
 }

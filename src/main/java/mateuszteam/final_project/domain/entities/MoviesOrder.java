@@ -22,7 +22,7 @@ public class MoviesOrder {
     @Column(name = "id")
     private long orderId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
