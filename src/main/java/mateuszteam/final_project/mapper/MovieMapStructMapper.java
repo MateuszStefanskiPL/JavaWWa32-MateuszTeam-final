@@ -1,5 +1,6 @@
 package mateuszteam.final_project.mapper;
 
+import mateuszteam.final_project.domain.dto.MainPageMovieDto;
 import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.dto.MovieDto;
 import org.mapstruct.InheritInverseConfiguration;
@@ -11,8 +12,7 @@ public interface MovieMapStructMapper{
 
     Movie mapFromDtoToDomain(MovieDto movieDto);
 
-    @InheritInverseConfiguration
     MovieDto mapFromDomainToDto(Movie movie);
 
-
+    MainPageMovieDto mapFromDomainToMainPageMovieDto(Movie movie);
 }

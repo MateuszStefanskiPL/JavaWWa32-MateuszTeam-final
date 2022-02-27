@@ -3,6 +3,7 @@ package mateuszteam.final_project.domain.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +31,8 @@ public class Rating {
     private double score;
 
     private String text;
+
+    private LocalDateTime dateOfEvaluation;
 
 
 }

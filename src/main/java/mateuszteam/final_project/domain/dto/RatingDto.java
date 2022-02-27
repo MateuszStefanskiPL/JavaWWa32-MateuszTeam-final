@@ -3,6 +3,7 @@ package mateuszteam.final_project.domain.dto;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +24,7 @@ public class RatingDto {
 
     @NotNull
     private double ratingScore;
+
+    @NotNull
+    private LocalDateTime dateOfEvaluation;
 }
