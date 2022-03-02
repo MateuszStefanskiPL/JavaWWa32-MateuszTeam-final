@@ -8,9 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
-public interface RatingRepository extends CrudRepository<Rating, Long> {
+public interface RatingsRepository extends CrudRepository<Rating, Long> {
 
     Page<Rating> findRatingsByMovie_movieIdOrderByScoreDesc(Long movieId, Pageable pageable);
+
+    List<Rating> findRatingsByMovie_MovieId(Long movieId);
 
 }

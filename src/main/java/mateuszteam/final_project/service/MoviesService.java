@@ -1,8 +1,8 @@
 package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
-import mateuszteam.final_project.domain.dto.MainPageMovieDto;
 import mateuszteam.final_project.domain.dto.MovieDto;
+import mateuszteam.final_project.domain.dto.MovieTileDto;
 import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieStatus;
 import mateuszteam.final_project.mapper.MovieMapStructMapper;
@@ -31,17 +31,23 @@ public class MoviesService {
                 .collect(Collectors.toList());
     }
 
-    public List<MainPageMovieDto> findMoviesForMainPage() {
+    public List<MovieTileDto> findMoviesForMainPage() {
         return moviesRepository.findByMovieStatusIn(MS_MAIN_PAGE)
                 .stream()
-                .map(movieMapper::mapFromDomainToMainPageMovieDto)
+                .map(movieMapper::mapFromDomainToTileDto)
                 .collect(Collectors.toList());
     }
 
-    public MovieDto showMovieFullDescription(Long id) {
+    public MovieDto findMovieFullDescription(Long id) {
         return moviesRepository.findById(id).stream()
-                .map(m -> movieMapper.mapFromDomainToDto(m))
+                .map(movieMapper::mapFromDomainToDto)
                 .findFirst()
                 .get();
+    }
+
+    public List<MovieTileDto> findMoviesWithHighestRating() {
+        return moviesRepository.findByAverageScoreOrderByAverageScore().stream()
+                .map(movieMapper::mapFromDomainToTileDto)
+                .collect(Collectors.toList());
     }
 }

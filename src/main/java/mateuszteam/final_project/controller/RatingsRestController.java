@@ -3,38 +3,33 @@ package mateuszteam.final_project.controller;
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.RatingDto;
 import mateuszteam.final_project.domain.entities.Rating;
-import mateuszteam.final_project.mapper.RatingMapStructMapper;
-import mateuszteam.final_project.repository.RatingRepository;
+import mateuszteam.final_project.service.RatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/ratings")
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class RatingsRestController {
 
-    private final RatingRepository ratingRepository;
-    private final RatingMapStructMapper ratingMapper;
+    private final RatingsService ratingsService;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
-    public RatingDto displayRatingsForSingleMovie(@PathVariable Long id){
-        var rating = new Rating();
-        if(ratingRepository.findById(id).isPresent()){
-            rating = ratingRepository.findById(id).get();
-        }
-        return ratingMapper.mapFromDomainToDto(rating);
+    @GetMapping("/top5/{id}")
+    public List<RatingDto> displayTop5RatingsForSingleMovie(@PathVariable Long id){
+        return ratingsService.getTop5RatingsForSingleMovie(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
-    public RatingDto displayTopRatings(@PathVariable long id, Pageable pageable){
-        return ratingMapper.mapFromDomainToDto(
-                (Rating) ratingRepository
-                        .findRatingsByMovie_movieIdOrderByScoreDesc(id, pageable).get());
+    @GetMapping("/all/{id}")
+    public List<RatingDto> displayAllRatingsForSingleMovieById(@PathVariable Long id){
+        return ratingsService.getAllRatingsForSingleMovie(id);
     }
+
 }
 
 

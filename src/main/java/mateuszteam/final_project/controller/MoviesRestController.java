@@ -1,9 +1,8 @@
 package mateuszteam.final_project.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import mateuszteam.final_project.domain.dto.MainPageMovieDto;
 import mateuszteam.final_project.domain.dto.MovieDto;
+import mateuszteam.final_project.domain.dto.MovieTileDto;
 import mateuszteam.final_project.service.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,14 +21,19 @@ public class MoviesRestController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/main")
-    public List<MainPageMovieDto> displayMoviesForMainPage(){
+    public List<MovieTileDto> displayMoviesTilesForMainPage(){
         return moviesService.findMoviesForMainPage();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public MovieDto displayMovieFullDescription(@PathVariable Long id){
-        return  moviesService.showMovieFullDescription(id);
+        return  moviesService.findMovieFullDescription(id);
+    }
+
+    @GetMapping("/best")
+    public List<MovieTileDto> displayMoviesWithHighestRating(){
+        return moviesService.findMoviesWithHighestRating();
     }
 
 
