@@ -3,6 +3,7 @@ package mateuszteam.final_project.domain.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +24,8 @@ public class User {
     private String email;
 
     private String password;
+
+    private BigDecimal moneySpent;
 
     @Enumerated
     @Column(name = "status")

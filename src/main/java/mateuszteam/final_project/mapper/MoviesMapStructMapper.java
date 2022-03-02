@@ -6,7 +6,7 @@ import mateuszteam.final_project.domain.entities.Movie;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface MovieMapStructMapper{
+public interface MoviesMapStructMapper {
 
 
     Movie mapFromDtoToDomain(MovieDto movieDto);

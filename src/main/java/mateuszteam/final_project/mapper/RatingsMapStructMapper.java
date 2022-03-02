@@ -7,7 +7,7 @@ import mateuszteam.final_project.domain.entities.Rating;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface RatingMapStructMapper {
+public interface RatingsMapStructMapper {
 
     Rating mapFromDtoToDomain(RatingDto ratingDto);
 

@@ -3,7 +3,7 @@ package mateuszteam.final_project.service;
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.RatingDto;
 import mateuszteam.final_project.domain.entities.Rating;
-import mateuszteam.final_project.mapper.RatingMapStructMapper;
+import mateuszteam.final_project.mapper.RatingsMapStructMapper;
 import mateuszteam.final_project.repository.RatingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +20,7 @@ public class RatingsService {
     private final int TOP_FIVE = 5;
 
     private final RatingsRepository ratingsRepository;
-    private final RatingMapStructMapper ratingMapper;
+    private final RatingsMapStructMapper ratingMapper;
 
 
     public List<RatingDto> getTop5RatingsForSingleMovie(Long id){

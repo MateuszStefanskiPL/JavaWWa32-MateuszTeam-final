@@ -1,13 +1,10 @@
 package mateuszteam.final_project.domain.dto;
 
 import lombok.*;
-import mateuszteam.final_project.domain.entities.Address;
 import mateuszteam.final_project.domain.entities.UserStatus;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +27,10 @@ public class UserDto {
     @NotNull
     @Size(min = 8, max = 1000)
     private String password;
+
+    @NotNull
+    @Digits(integer = 10, fraction = 2)
+    private BigDecimal moneySpent;
 
     @NotEmpty
     @NotNull

@@ -5,7 +5,7 @@ import mateuszteam.final_project.domain.dto.MovieDto;
 import mateuszteam.final_project.domain.dto.MovieTileDto;
 import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieStatus;
-import mateuszteam.final_project.mapper.MovieMapStructMapper;
+import mateuszteam.final_project.mapper.MoviesMapStructMapper;
 import mateuszteam.final_project.repository.MoviesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class MoviesService {
     private static final List<MovieStatus> MS_MAIN_PAGE = Arrays.asList(MovieStatus.PREMIERE, MovieStatus.NEWEST);
 
     private final MoviesRepository moviesRepository;
-    private final MovieMapStructMapper movieMapper;
+    private final MoviesMapStructMapper movieMapper;
 
     public List<MovieDto> findAllMovies(){
         List<Movie> movies = (List<Movie>) moviesRepository.findAll();
