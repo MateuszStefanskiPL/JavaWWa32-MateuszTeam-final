@@ -17,6 +17,5 @@ public class MovieCopyDto {
     @NotNull
     private long movieId;
 
-    @NotNull
     private long orderId;
 }
