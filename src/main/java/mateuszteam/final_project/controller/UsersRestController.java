@@ -7,9 +7,8 @@ import mateuszteam.final_project.mapper.UsersMapStructMapper;
 import mateuszteam.final_project.repository.UsersRepository;
 import mateuszteam.final_project.service.UsersRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -19,8 +18,14 @@ public class UsersRestController {
     private final UsersRegistrationService usersRegistrationService;
 
 
-    @PostMapping
-    public User registerNewUser(UserDto userDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/register")
+    public User registerNewUser(@RequestBody UserDto userDto){
         return usersRegistrationService.registerUser(userDto);
+    }
+
+    @GetMapping("/{id}")
+    public UserDto displayUserData(@PathVariable Long id){
+        return usersRegistrationService.findUserData(id);
     }
 }

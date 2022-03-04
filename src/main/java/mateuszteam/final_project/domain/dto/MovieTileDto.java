@@ -19,7 +19,7 @@ public class MovieTileDto {
     @NotEmpty
     @NotNull
     @Size(min = 1, max = 250)
-    private String movieTitle;
+    private String title;
 
     @NotNull
     private LocalDate releaseDate;

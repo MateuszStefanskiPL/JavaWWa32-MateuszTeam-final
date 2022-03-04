@@ -31,10 +31,18 @@ public class MoviesRestController {
         return  moviesService.findMovieFullDescription(id);
     }
 
-    @GetMapping("/best")
-    public List<MovieTileDto> displayMoviesWithHighestRating(){
-        return moviesService.findMoviesWithHighestRating();
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/all")
+    public List<MovieDto> displayAllMovies(){
+        return  moviesService.findAllMovies();
     }
+
+
+
+//    @GetMapping("/best")
+//    public List<MovieTileDto> displayMoviesWithHighestRating(){
+//        return moviesService.findMoviesWithHighestRating();
+//    }
 
 
 

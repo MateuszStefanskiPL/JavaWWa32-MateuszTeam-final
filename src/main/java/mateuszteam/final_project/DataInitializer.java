@@ -3,8 +3,6 @@ package mateuszteam.final_project;
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.entities.*;
 import mateuszteam.final_project.repository.MoviesRepository;
-import mateuszteam.final_project.repository.OrdersRepository;
-import mateuszteam.final_project.repository.RatingsRepository;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,8 +21,6 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UsersRepository usersRepository;
     private final MoviesRepository moviesRepository;
-    private final OrdersRepository ordersRepository;
-    private final RatingsRepository ratingsRepository;
 
 
     @Override
@@ -89,10 +85,11 @@ public class DataInitializer implements CommandLineRunner {
                 .releaseDate(LocalDate.of(1984,11,9))
                 .director("Wes Craven")
                 .genre(Genre.HORROR)
-                .starring("Elm Street in provincial Springwood is inhabited by 15-year-old Tina Gray (Amanda Wyss) - a girl who is haunted by nightmares. Their anti-hero is a man in a red and green sweater and an old hat, a scarred face with burns, and armed with a glove with four blades. The dreams become more and more realistic and one night Tina wakes up screaming to discover that her nightgown has been cut, just like in her dream.")
+                .starring("Amanda Wyss")
+               // .starring("Elm Street in provincial Springwood is inhabited by 15-year-old Tina Gray (Amanda Wyss) - a girl who is haunted by nightmares. Their anti-hero is a man in a red and green sweater and an old hat, a scarred face with burns, and armed with a glove with four blades. The dreams become more and more realistic and one night Tina wakes up screaming to discover that her nightgown has been cut, just like in her dream.")
                 .movieStatus(MovieStatus.CLASSIC)
                 .numberOfCopies(2)
-                .averageScore(9.5D)
+                .averageScore(10.0D)
                 .build();
 
         var movie2 = Movie.builder()
@@ -100,10 +97,11 @@ public class DataInitializer implements CommandLineRunner {
                 .releaseDate(LocalDate.of(2022,1,21))
                 .director("Garth Jennings")
                 .genre(Genre.ANIMATION)
-                .starring("To perform at the Crystal Theater, Buster Moon and his crew must find and convince the rock legend to return to the stage.")
+                .starring("Matthew David McConaughey ,Laura Jeanne Reese Witherspoon")
+               // .starring("To perform at the Crystal Theater, Buster Moon and his crew must find and convince the rock legend to return to the stage.")
                 .movieStatus(MovieStatus.PREMIERE)
                 .numberOfCopies(2)
-                .averageScore(9.8D)
+                .averageScore(0.0D)
                 .build();
 
         var movie3 = Movie.builder()
@@ -111,10 +109,11 @@ public class DataInitializer implements CommandLineRunner {
                 .releaseDate(LocalDate.of(1990,4,6))
                 .director("John Waters")
                 .genre(Genre.MUSICAL)
-                .starring("A social outcast(Johnny Depp) whose parents were executed in the electric chair falls in love with a girl from a good home.")
+                .starring("Johny Depp")
+                //.starring("A social outcast(Johnny Depp) whose parents were executed in the electric chair falls in love with a girl from a good home.")
                 .movieStatus(MovieStatus.CLASSIC)
                 .numberOfCopies(2)
-                .averageScore(9.75)
+                .averageScore(0.0D)
                 .build();
 
         var copy1 = MovieCopy.builder()
@@ -150,11 +149,21 @@ public class DataInitializer implements CommandLineRunner {
                 .text("I like it")
                 .movie(movie1)
                 .user(user1)
-                .score(10)
+                .score(10.0D)
                 .dateOfEvaluation(LocalDateTime.now().minusDays(5))
                 .build();
 
+        var rating2 = Rating.builder()
+                .text("I like it")
+                .movie(movie1)
+                .user(user2)
+                .score(10.0D)
+                .dateOfEvaluation(LocalDateTime.now().minusDays(2))
+                .build();
+
         moviesRepository.saveAll(Arrays.asList(movie1,movie2,movie3));
+
+
 
     }
 

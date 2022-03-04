@@ -8,6 +8,8 @@ import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 @Service
 public class UsersRegistrationService {
@@ -19,5 +21,10 @@ public class UsersRegistrationService {
     public User registerUser(final UserDto userDto) {
         var user = usersMapper.mapFromDtoToDomain(userDto);
         return usersRepository.save(user);
+    }
+
+    public UserDto findUserData(final Long id) {
+        var user = usersRepository.findByUserId(id).orElseThrow(NoSuchElementException::new);
+        return usersMapper.mapFromDomainToDto(user);
     }
 }
