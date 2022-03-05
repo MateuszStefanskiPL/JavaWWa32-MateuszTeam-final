@@ -15,4 +15,5 @@ public interface MoviesRepository extends CrudRepository<Movie, Long> {
     List<Movie> findByMovieStatusIn(List<MovieStatus> ms);
     List<Movie> findAllByOrderByAverageScoreDesc();
 
+
 }
