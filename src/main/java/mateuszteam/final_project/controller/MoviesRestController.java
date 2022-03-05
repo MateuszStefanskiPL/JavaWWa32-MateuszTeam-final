@@ -37,6 +37,7 @@ public class MoviesRestController {
         return  moviesService.findAllMovies();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/best")
     public List<MovieTileDto> displayMoviesWithHighestRating(){
         return moviesService.findMoviesWithHighestRating();

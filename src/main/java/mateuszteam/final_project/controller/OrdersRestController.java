@@ -31,11 +31,11 @@ public class OrdersRestController {
         return ordersService.findAllOrdersByStatus(status);
     }
 
-
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(name = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public MoviesOrder submitOrder(@RequestBody MoviesOrderDto moviesOrderDto){
         return ordersService.addNewOrder(moviesOrderDto);
     }
+
+
 }
