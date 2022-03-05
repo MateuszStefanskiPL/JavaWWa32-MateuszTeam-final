@@ -45,9 +45,10 @@ public class MoviesService {
                 .get();
     }
 
-//    public List<MovieTileDto> findMoviesWithHighestRating() {
-//        return moviesRepository.findMoviesByAverageScoreAndOrderByAverageScoreDesc().stream()
-//                .map(movieMapper::mapFromDomainToTileDto)
-//                .collect(Collectors.toList());
-//    }
+    public List<MovieTileDto> findMoviesWithHighestRating() {
+        return moviesRepository.findAllByOrderByAverageScoreDesc().stream()
+                .map(movieMapper::mapFromDomainToTileDto)
+                .collect(Collectors.toList());
+    }
+
 }

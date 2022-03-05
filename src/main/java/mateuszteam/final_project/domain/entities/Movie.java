@@ -29,6 +29,7 @@ public class Movie {
 
     private String director;
 
+    @Column(length = 65536)
     private String starring;
 
     @Column(name = "copies")

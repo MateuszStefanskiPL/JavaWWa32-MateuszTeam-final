@@ -23,4 +23,6 @@ public class MovieTileDto {
 
     @NotNull
     private LocalDate releaseDate;
+
+    private double averageScore;
 }

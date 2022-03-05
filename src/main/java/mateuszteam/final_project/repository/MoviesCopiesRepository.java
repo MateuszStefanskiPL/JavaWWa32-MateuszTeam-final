@@ -4,7 +4,10 @@ import mateuszteam.final_project.domain.entities.MovieCopy;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
-public interface MovieCopyRepository extends CrudRepository<MovieCopy, Long>{
+import java.util.List;
 
+@Repository
+public interface MoviesCopiesRepository extends CrudRepository<MovieCopy, Long>{
+
+    List<MovieCopy> findMovieCopiesByMovie_MovieId(Long id);
 }
