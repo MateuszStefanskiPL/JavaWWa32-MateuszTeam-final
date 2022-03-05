@@ -25,24 +25,24 @@ public class MoviesStatusChanger {
 
 
     //@Scheduled(cron = "@daily")
-    @Scheduled(cron = "0 * * * * *")    //co minute
+    @Scheduled(fixedDelay=10000) //co 10tys ms = 10 sec
     public void updateMovieStatus(){
         var allMovies = moviesRepository.findAll();
 
         for(var movie : allMovies) {
-            if(movie.getReleaseDate().isAfter(STANDARD_DATE)) {
-                changeStatus(movie, MovieStatus.CLASSIC);
+            if(movie.getReleaseDate().isAfter(PREMIER_DATE)) {
+                movie.setMovieStatus(MovieStatus.PREMIERE);
             }
-            else if (movie.getReleaseDate().isBefore(STANDARD_DATE)){
-                changeStatus(movie, MovieStatus.STANDARD);
-            }
-            else if (movie.getReleaseDate().isBefore(NEWEST_DATE)){
+            else if (movie.getReleaseDate().isAfter(NEWEST_DATE) && movie.getReleaseDate().isBefore(PREMIER_DATE)){
                 movie.setMovieStatus(MovieStatus.NEWEST);
-                log.info("Movie " + movie.getTitle() + " status set to " + movie.getMovieStatus());
             }
-            else {
-                changeStatus(movie, MovieStatus.PREMIERE);
+            else if (movie.getReleaseDate().isAfter(STANDARD_DATE) && movie.getReleaseDate().isBefore(NEWEST_DATE)){
+                movie.setMovieStatus(MovieStatus.STANDARD);
             }
+            else if(movie.getReleaseDate().isBefore(STANDARD_DATE)) {
+                movie.setMovieStatus(MovieStatus.CLASSIC);
+            }
+            log.info("Movie " + movie.getTitle() + " status set to " + movie.getMovieStatus());
         }
 
         moviesRepository.saveAll(allMovies);
@@ -50,6 +50,5 @@ public class MoviesStatusChanger {
 
     private void changeStatus(Movie movie, MovieStatus status) {
         movie.setMovieStatus(status);
-        log.info("Movie " + movie.getTitle() + " status set to " + status);
     }
 }
