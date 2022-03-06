@@ -71,25 +71,25 @@ class OrdersRepositoryTest {
         var o1 = MoviesOrder.builder()
                 .orderStatus(OrderStatus.ACCEPTED)
                 .orderPlacedDate(LocalDateTime.now())
-                .price(BigDecimal.valueOf(5))
+                .totalPrice(BigDecimal.valueOf(5))
                 .user(user)
                 .build();
         var o2 = MoviesOrder.builder()
                 .orderStatus(OrderStatus.TURNED)
                 .orderPlacedDate(LocalDateTime.now().minusDays(15))
-                .price(BigDecimal.valueOf(15))
+                .totalPrice(BigDecimal.valueOf(15))
                 .user(user)
                 .build();
         var o3 = MoviesOrder.builder()
                 .orderStatus(OrderStatus.TURNED)
                 .orderPlacedDate(LocalDateTime.now().minusDays(30))
-                .price(BigDecimal.valueOf(30))
+                .totalPrice(BigDecimal.valueOf(30))
                 .user(user)
                 .build();
         var o4 = MoviesOrder.builder()
                 .orderStatus(OrderStatus.TURNED)
                 .orderPlacedDate(LocalDateTime.now().minusDays(45))
-                .price(BigDecimal.valueOf(45))
+                .totalPrice(BigDecimal.valueOf(45))
                 .user(user)
                 .build();
         var orders = Arrays.asList(o1, o2, o3, o4);
@@ -111,10 +111,10 @@ class OrdersRepositoryTest {
         Assertions.assertThat(orderPage1).hasSize(2);
         var ro1 = orderPage1.get(0);    //retrieved o1
         Assertions.assertThat(ro1).isNotNull();
-        Assertions.assertThat(ro1.getPrice()).isEqualTo(BigDecimal.valueOf(5));
+        Assertions.assertThat(ro1.getTotalPrice()).isEqualTo(BigDecimal.valueOf(5));
         var ro4 = ordersForPage2.getContent().get(1);   //o4
         Assertions.assertThat(ro4).isNotNull();
-        Assertions.assertThat(ro4.getPrice()).isEqualTo(BigDecimal.valueOf(45));
+        Assertions.assertThat(ro4.getTotalPrice()).isEqualTo(BigDecimal.valueOf(45));
     }
 
 

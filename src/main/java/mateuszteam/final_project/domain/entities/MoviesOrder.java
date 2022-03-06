@@ -39,10 +39,8 @@ public class MoviesOrder {
     @Column(name = "status_change_date")
     private LocalDateTime statusChangeDate;
 
-    private BigDecimal price;
+    private BigDecimal totalPrice;  //cena za cale zamowienie, ustawiana przy zwrocie
 
-
-
-
+    private BigDecimal pricePerDay; //koszt jednego dnia wypozyczenia ZAMOWIENIA
 
 }
