@@ -32,11 +32,14 @@ public class SessionCartService {
     }
 
     public MoviesOrder toOrder() {
+
         //ustalic, czy sa dostepne wolne kopie dla wybranych filmow
 
         //jesli tak, wyliczamy cene pricePerDay na podstawie filmow oraz dodajemy kopie i zwracamy Order
 
         //jesli nie, modyfikujemy koszyk i zwracamy uzytkownikowi zamowienie ze zmodyfikowanego koszyka
+
+        return null;
     }
 
 }
