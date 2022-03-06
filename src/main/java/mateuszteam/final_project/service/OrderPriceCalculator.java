@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Component
 public class OrderPriceCalculator {
 
-    private static final BigDecimal STANDARD_MOVIE_PRICE= BigDecimal.valueOf(10);
+    private static final BigDecimal STANDARD_MOVIE_PRICE = BigDecimal.valueOf(10);
 
     private static final BigDecimal SILVER_USER_DISCOUNT = BigDecimal.valueOf(0.95D);
     private static final BigDecimal GOLD_USER_DISCOUNT = BigDecimal.valueOf(0.85D);
@@ -31,18 +31,22 @@ public class OrderPriceCalculator {
     private final OrdersRepository ordersRepository;
     private final MoviesCopiesRepository copiesRepository;
 
-
-    public BigDecimal calculateOrderPrice(MoviesOrder order){
-        var userStatus = order.getUser().getUserStatus();
-        var movieStatus = order.getMovieCopies().stream().findFirst().get().getMovie().getMovieStatus();
-        var totalPrice = calculateOrderPriceByMovieStatus(movieStatus,userStatus);
-
-        return totalPrice;
+    public BigDecimal calculateTotalOrderPrice(){
+        return null;
     }
 
-    private BigDecimal calculateOrderPriceByUserStatus(UserStatus userStatus){
+    private BigDecimal calculateOrderPricePerDay(MoviesOrder order) {
+        var userStatus = order.getUser().getUserStatus();
+        var movieStatus = order.getMovieCopies().stream().findFirst().get().getMovie().getMovieStatus();
+        var pricePerDay = calculateOrderPriceByMovieStatus(movieStatus, userStatus);
+        order.setPricePerDay(pricePerDay);
+
+        return pricePerDay;
+    }
+
+    private BigDecimal calculateOrderPriceByUserStatus(UserStatus userStatus) {
         var finalPrice = STANDARD_MOVIE_PRICE;
-        switch (userStatus){
+        switch (userStatus) {
             case SILVER:
                 finalPrice = STANDARD_MOVIE_PRICE.multiply(SILVER_USER_DISCOUNT);
                 break;
@@ -58,10 +62,10 @@ public class OrderPriceCalculator {
         return finalPrice;
     }
 
-    private BigDecimal calculateOrderPriceByMovieStatus(MovieStatus movieStatus,UserStatus userStatus){
+    private BigDecimal calculateOrderPriceByMovieStatus(MovieStatus movieStatus, UserStatus userStatus) {
         var finalPrice = calculateOrderPriceByUserStatus(userStatus);
 
-        switch (movieStatus){
+        switch (movieStatus) {
             case CLASSIC:
                 finalPrice.multiply(CLASSIC_MOVIE_PRICE_IMPACT);
                 break;
