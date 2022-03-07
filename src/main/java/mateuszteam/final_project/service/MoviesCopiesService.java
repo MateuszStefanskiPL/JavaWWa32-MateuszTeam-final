@@ -18,7 +18,7 @@ public class MoviesCopiesService {
     private final MoviesCopiesRepository copiesRepository;
     private final MoviesCopiesMapStructMapper copiesMapper;
 
-    public List<MovieCopyDto> findAllCopiesForSingleMovie(Long id) {
+    public List<MovieCopyDto> findAllCopiesForSingleMovie(final Long id) {
         var copy = copiesRepository.findMovieCopiesByMovie_MovieId(id);
         return copy.stream()
                 .map(c -> copiesMapper.mapFromDomainToDto(c))

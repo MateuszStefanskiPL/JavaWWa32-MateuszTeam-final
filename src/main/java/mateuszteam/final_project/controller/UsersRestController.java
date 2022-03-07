@@ -3,8 +3,6 @@ package mateuszteam.final_project.controller;
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.UserDto;
 import mateuszteam.final_project.domain.entities.User;
-import mateuszteam.final_project.mapper.UsersMapStructMapper;
-import mateuszteam.final_project.repository.UsersRepository;
 import mateuszteam.final_project.service.UsersRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +22,17 @@ public class UsersRestController {
         return usersRegistrationService.registerUser(userDto);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
     public UserDto displayUserData(@PathVariable Long id){
-        return usersRegistrationService.findUserData(id);
+        return usersRegistrationService.findUserDataById(id);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{email}")
+    public UserDto displayUserData(@PathVariable String email){
+        return usersRegistrationService.findUserDataByEmail(email);
+    }
+
+
 }

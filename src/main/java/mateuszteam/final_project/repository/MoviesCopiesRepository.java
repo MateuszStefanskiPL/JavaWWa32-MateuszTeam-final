@@ -12,4 +12,6 @@ public interface MoviesCopiesRepository extends JpaRepository<MovieCopy, Long> {
 
     List<MovieCopy> findMovieCopiesByMovie_MovieId(Long id);
     Movie findMovieByCopyId(Long id);
+    List<MovieCopy> findAllByMovie_movieId(Long movieId);
+    MovieCopy findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(Long movieId);
 }

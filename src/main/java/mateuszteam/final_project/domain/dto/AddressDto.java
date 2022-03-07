@@ -36,5 +36,7 @@ public class AddressDto {
     @Size(min = 5, max = 50)
     private String phone;
 
+    private Long userId;
+
 
 }

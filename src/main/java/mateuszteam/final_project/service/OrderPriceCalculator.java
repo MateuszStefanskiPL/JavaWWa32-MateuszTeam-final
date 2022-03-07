@@ -32,14 +32,20 @@ public class OrderPriceCalculator {
     private final MoviesCopiesRepository copiesRepository;
 
     public BigDecimal calculateTotalOrderPrice(){
+        //trzeba pomnożyć cenę za dzień razy ilość dni
         return null;
+    }
+
+    public void setPricePerDayAfterDiscount(MoviesOrder order){
+        var pricePerDay = calculateOrderPricePerDay(order);
+        order.setPricePerDay(pricePerDay);
+        log.info("Price per day for order nr " + order.getOrderId() + "has been set to " + pricePerDay);
     }
 
     private BigDecimal calculateOrderPricePerDay(MoviesOrder order) {
         var userStatus = order.getUser().getUserStatus();
         var movieStatus = order.getMovieCopies().stream().findFirst().get().getMovie().getMovieStatus();
         var pricePerDay = calculateOrderPriceByMovieStatus(movieStatus, userStatus);
-        order.setPricePerDay(pricePerDay);
 
         return pricePerDay;
     }

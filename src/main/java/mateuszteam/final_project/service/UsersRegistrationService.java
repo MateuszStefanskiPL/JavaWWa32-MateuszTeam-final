@@ -23,8 +23,13 @@ public class UsersRegistrationService {
         return usersRepository.save(user);
     }
 
-    public UserDto findUserData(final Long id) {
+    public UserDto findUserDataById(final Long id) {
         var user = usersRepository.findByUserId(id).orElseThrow(NoSuchElementException::new);
+        return usersMapper.mapFromDomainToDto(user);
+    }
+
+    public UserDto findUserDataByEmail(final String email) {
+        var user = usersRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
         return usersMapper.mapFromDomainToDto(user);
     }
 }
