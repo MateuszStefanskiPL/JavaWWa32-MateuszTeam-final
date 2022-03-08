@@ -2,6 +2,7 @@ package mateuszteam.final_project.domain.dto;
 
 import lombok.*;
 import mateuszteam.final_project.domain.entities.OrderStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ public class MoviesOrderDto {
     @NotNull
     private long userId;
 
+    @DateTimeFormat(fallbackPatterns = {"yyyy-MM-dd'T'HH:mm"})
     @NotNull
     private LocalDateTime orderDate;
 

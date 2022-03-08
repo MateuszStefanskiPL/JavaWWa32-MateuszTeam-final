@@ -1,21 +1,24 @@
 package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import mateuszteam.final_project.domain.dto.MoviesOrderDto;
 import mateuszteam.final_project.domain.entities.MovieCopy;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.repository.MoviesCopiesRepository;
-import mateuszteam.final_project.repository.MoviesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service
 @Scope(value = WebApplicationContext.SCOPE_SESSION,
@@ -25,14 +28,19 @@ public class SessionCartService {
     private List<Long> movieIds = new ArrayList<>();
 
     private final OrderPriceCalculator priceCalculator;
-    private final MoviesRepository moviesRepository;
     private final MoviesCopiesRepository copiesRepository;
 
     public List<Long> addMovie(Long movieId) {
-        if(! movieIds.contains(movieId) ) {
+        if (!movieIds.contains(movieId)) {
             movieIds.add(movieId);
         }
+        return getCartEntries();
+    }
 
+    public List<Long> removeMovie(final Long movieId) {
+        if (movieIds.contains(movieId)) {
+            movieIds.remove(movieId);
+        }
         return getCartEntries();
     }
 
@@ -42,8 +50,18 @@ public class SessionCartService {
 
     public MoviesOrder toOrder() {
         var orderedCopies = getCartEntries().stream()
-                .map(this::getForMovieId)
-                .collect(Collectors.toList());
+                .map(this::getFreeCopyForMovieId)
+                .collect(Collectors.toSet());
+
+        var order = MoviesOrder.builder().build();
+
+        if (!orderedCopies.isEmpty()){
+            order.setMovieCopies(orderedCopies);
+            priceCalculator.setPricePerDayAfterDiscount(order);
+            order.setOrderPlacedDate(LocalDateTime.now());
+            //todo skąd wziąc dane o userze ? security ?
+        }
+
 
 
         //ustalic, czy sa dostepne wolne kopie dla wybranych filmow
@@ -52,17 +70,18 @@ public class SessionCartService {
 
         //jesli nie, modyfikujemy koszyk i zwracamy uzytkownikowi zamowienie ze zmodyfikowanego koszyka
 
-        return null;
+        return order;
     }
 
-    private MovieCopy getForMovieId(Long movieId) {
+    private MovieCopy getFreeCopyForMovieId(Long movieId) {
         var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
                 .filter(copy -> copy.getMoviesOrder() == null)
                 .findFirst();
 
-        var copyOptional2 = copiesRepository.findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(movieId);
+        //var copyOptional2 = copiesRepository.findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(movieId);
 
-        return null;
+        return copyOptional.get();
     }
+
 
 }

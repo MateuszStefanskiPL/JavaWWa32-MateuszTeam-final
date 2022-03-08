@@ -25,6 +25,7 @@ public class OrdersService {
     private final SessionCartService cartService;
     private final UsersRepository usersRepository;
 
+
     public List<MoviesOrderDto> findAllOrdersByUserId(final Long id) {
         return ordersRepository.findByUser_userId(id, PageRequest.of(3,6))
                 .stream()
@@ -46,7 +47,7 @@ public class OrdersService {
     }
 
     //POST /orders - utworzenie Order po raz pierwszy
-    public MoviesOrder placeOrder(String userEmail) {
+    public MoviesOrder placeOrderInCart(String userEmail) {
         var cartToOrder = cartService.toOrder();
         var user = usersRepository.findByEmail(userEmail);
         cartToOrder.setUser(user.get());

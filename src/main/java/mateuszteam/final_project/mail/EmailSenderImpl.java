@@ -2,6 +2,9 @@ package mateuszteam.final_project.mail;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -13,8 +16,8 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class EmailSenderImpl implements EmailSender {
 
-
     private final JavaMailSender javaMailSender;
+
 
     @Override
     public void sendEmail(String to, String title, String content) {
