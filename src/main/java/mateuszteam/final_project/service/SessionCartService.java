@@ -74,13 +74,14 @@ public class SessionCartService {
     }
 
     private MovieCopy getFreeCopyForMovieId(Long movieId) {
-        var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
-                .filter(copy -> copy.getMoviesOrder() == null)
-                .findFirst();
+//        var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
+//                .filter(copy -> copy.getMoviesOrder() == null)
+//                .findFirst();
 
-        //var copyOptional2 = copiesRepository.findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(movieId);
+        var copyOptional = copiesRepository.findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(movieId);
 
-        return copyOptional.get();
+
+        return copyOptional;
     }
 
 

@@ -13,9 +13,9 @@ public class EmailRestController {
 
     private final EmailSenderService mailService;
 
-    @GetMapping("/email")
+    @GetMapping("/send")
     ResponseEntity<String> sendMail() throws Exception {
-        mailService.sendMail("prz.wozniak@hotmail.com",
+        mailService.sendMail("mladen.rudonja@gmail.com",
                 "Zamówienie złożone",
                 "Dziękujemy za złożone <bold>zamówienie</bold>!",
                 true);
