@@ -2,16 +2,21 @@ package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mateuszteam.final_project.domain.dto.UserDto;
+import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
+import mateuszteam.final_project.mapper.UsersMapStructMapper;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_={@Autowired})
-@Component
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Service
 public class UserStatusChangerService {
 
     private static final BigDecimal SCORE_FOR_SILVER_STATUS = BigDecimal.valueOf(1000D);
@@ -19,39 +24,42 @@ public class UserStatusChangerService {
     private static final BigDecimal SCORE_FOR_PLATINUM_STATUS = BigDecimal.valueOf(10000D);
 
     private final UsersRepository usersRepository;
+    private final UsersMapStructMapper mapper;
 
-    public void changeUserStatus(){
+    public void saveChangedUsers() {
+        List<User> changedUsers = changeUserStatus().stream()
+                .map(mapper::mapFromDtoToDomain)
+                .collect(Collectors.toList());
+        usersRepository.saveAll(changedUsers);
+    }
 
-        var allUsers = usersRepository.findAll();
+    private List<UserDto> changeUserStatus() {
 
-        for (var user : allUsers){
-            if (user.getMoneySpent().compareTo(SCORE_FOR_PLATINUM_STATUS) > 0){
-                user.setUserStatus(UserStatus.PLATINUM);
-            }
-            else if(user.getMoneySpent().compareTo(SCORE_FOR_GOLD_STATUS) > 0){
-                user.setUserStatus(UserStatus.GOLD);
-            }
-            else if(user.getMoneySpent().compareTo(SCORE_FOR_SILVER_STATUS) > 0){
-                user.setUserStatus(UserStatus.SILVER);
-            }
-            else {
-                user.setUserStatus(UserStatus.NEW_USER);
+        var allUsers = usersRepository.findAll().stream()
+                .map(mapper::mapFromDomainToDto)
+                .collect(Collectors.toList());
+
+        for (var user : allUsers) {
+            if (user.getMoneySpent().compareTo(SCORE_FOR_PLATINUM_STATUS) > 0) {
+                changeStatus(user, UserStatus.PLATINUM);
+            } else if (user.getMoneySpent().compareTo(SCORE_FOR_GOLD_STATUS) > 0) {
+                changeStatus(user, UserStatus.GOLD);
+            } else if (user.getMoneySpent().compareTo(SCORE_FOR_SILVER_STATUS) > 0) {
+                changeStatus(user, UserStatus.SILVER);
+            } else {
+                changeStatus(user, UserStatus.NEW_USER);
             }
             log.info("User " + user.getEmail() + " status has been changed on " + user.getUserStatus().toString());
         }
-
+        return allUsers;
     }
 
+    private void changeStatus(UserDto user, UserStatus status) {
+        user.setUserStatus(status);
+    }
 
 }
 
-//    Typ klienta Liczba wypożyczeń
-//        (filmów, nie zamówień!)
-//    Wydane pieniądze Wpływ na cenę
-//        wypożyczenia
-//    Silver 25 1000 0,95 x (5% zniżki)
-//        Gold 100 5000 0,85% (15%)
-//        Platinum 200 10000 0,70% (30%)
 
-//todo zapiac na evencie i napisać testy dla tej klasy
-//
+//todo zapiac na evencie i napisać testy dla tej klasy ,
+
