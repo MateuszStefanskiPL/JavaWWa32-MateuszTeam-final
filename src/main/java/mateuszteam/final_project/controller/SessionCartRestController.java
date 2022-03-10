@@ -1,6 +1,7 @@
 package mateuszteam.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
+import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.service.SessionCartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,8 +32,8 @@ public class SessionCartRestController {
     }
 
     @GetMapping("/cartToOrder")
-    public void addCartToOrder(@PathVariable Long movieId){
-        cartService.removeMovie(movieId);
+    public MoviesOrder addCartToOrder(){
+        return cartService.toOrder();
     }
 
 

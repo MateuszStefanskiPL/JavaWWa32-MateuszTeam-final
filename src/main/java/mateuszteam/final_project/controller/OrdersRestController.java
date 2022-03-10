@@ -37,11 +37,11 @@ public class OrdersRestController {
         return ordersService.addNewOrder(moviesOrderDto);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(name = "/{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public MoviesOrder putOrderToCart(@PathVariable String email){
-        return ordersService.placeOrderInCart(email);
-    }
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @PostMapping(name = "/{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public MoviesOrder putOrderToCart(@PathVariable String email){
+//        return ordersService.placeOrderInCart(email);
+//    }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{orderId}/accept")
