@@ -7,4 +7,7 @@ public interface Mapper<ENTITY,DTO> {
 
     DTO mapFromDomainToDto(ENTITY entity);
 
+
+    //todo zbudować generyczny interfejs dla wszystkich mapperów
+
 }

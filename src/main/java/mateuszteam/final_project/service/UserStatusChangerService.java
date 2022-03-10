@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 @Component
-public class UserStatusChanger {
+public class UserStatusChangerService {
 
     private static final BigDecimal SCORE_FOR_SILVER_STATUS = BigDecimal.valueOf(1000D);
     private static final BigDecimal SCORE_FOR_GOLD_STATUS = BigDecimal.valueOf(5000D);
@@ -54,3 +54,4 @@ public class UserStatusChanger {
 //        Platinum 200 10000 0,70% (30%)
 
 //todo zapiac na evencie i napisać testy dla tej klasy
+//
