@@ -3,9 +3,11 @@ package mateuszteam.final_project.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mateuszteam.final_project.domain.dto.UserDto;
+import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
 import mateuszteam.final_project.mapper.UsersMapStructMapper;
+import mateuszteam.final_project.repository.OrdersRepository;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,7 @@ public class UserStatusChangerService {
 
     private final UsersRepository usersRepository;
     private final UsersMapStructMapper mapper;
+    private final OrdersRepository ordersRepository;
 
     public void saveChangedUsers() {
         List<User> changedUsers = changeUserStatus().stream()
@@ -34,6 +37,7 @@ public class UserStatusChangerService {
     }
 
     private List<UserDto> changeUserStatus() {
+
 
         var allUsers = usersRepository.findAll().stream()
                 .map(mapper::mapFromDomainToDto)
