@@ -30,34 +30,35 @@ public class MoviesStatusChangerService {
 
     @Scheduled(cron = "@daily")
     public void saveUpdatedMovies(){
-        List<Movie> changedMovies = updateMovieStatus().stream()
+        List<Movie> changedMovies = updateMoviesStatus().stream()
                 .map(mapper::mapFromDtoToDomain)
                 .collect(Collectors.toList());
         moviesRepository.saveAll(changedMovies);
     }
 
-    private List<MovieDto> updateMovieStatus(){
+    private List<MovieDto> updateMoviesStatus(){
         var allMovies = moviesRepository.findAll().stream()
                 .map(mapper::mapFromDomainToDto)
+                .map(this::updateMovieStatus)
                 .collect(Collectors.toList());
-
-        for(var movie : allMovies) {
-            if(movie.getReleaseDate().isAfter(PREMIER_DATE)) {
-                changeStatus(movie,MovieStatus.PREMIERE);
-            }
-            else if (movie.getReleaseDate().isAfter(NEWEST_DATE) && movie.getReleaseDate().isBefore(PREMIER_DATE)){
-                changeStatus(movie,MovieStatus.NEWEST);
-            }
-            else if (movie.getReleaseDate().isAfter(STANDARD_DATE) && movie.getReleaseDate().isBefore(NEWEST_DATE)){
-                changeStatus(movie,MovieStatus.STANDARD);
-            }
-            else if(movie.getReleaseDate().isBefore(STANDARD_DATE)) {
-                changeStatus(movie,MovieStatus.CLASSIC);
-            }
-            log.info("Movie " + movie.getTitle() + " status set to " + movie.getMovieStatus());
-        }
-
         return allMovies;
+    }
+
+    private MovieDto updateMovieStatus(MovieDto movie){
+        if(movie.getReleaseDate().isAfter(PREMIER_DATE)) {
+            changeStatus(movie,MovieStatus.PREMIERE);
+        }
+        else if (movie.getReleaseDate().isAfter(NEWEST_DATE) && movie.getReleaseDate().isBefore(PREMIER_DATE)){
+            changeStatus(movie,MovieStatus.NEWEST);
+        }
+        else if (movie.getReleaseDate().isAfter(STANDARD_DATE) && movie.getReleaseDate().isBefore(NEWEST_DATE)){
+            changeStatus(movie,MovieStatus.STANDARD);
+        }
+        else if(movie.getReleaseDate().isBefore(STANDARD_DATE)) {
+            changeStatus(movie,MovieStatus.CLASSIC);
+        }
+        log.info("Movie " + movie.getTitle() + " status set to " + movie.getMovieStatus());
+        return movie;
     }
 
     private void changeStatus(MovieDto movie, MovieStatus status) {

@@ -72,7 +72,7 @@ public class UserStatusChangerService {
 
 }
 
-// todo poddać review zmiany w klasie userstatuschanger i narzucony na niego Event Listner
+// todo poddać review zmiany w klasie userstatuschanger i narzucony na niego Event Listner i zmiany w klasie MoviesStatusChangerService
 //todo  pododawać role użytkowników , napisać testy , wyłapać resztę exceptionów ( może trener by zrobił ściągę
 // todo jakie jeszcze mogą być wyjątki a my je znajdziemy i obhandlujemy
 //todo przydała by też się sciąga jakich testów użyć do testowania danej klasy
