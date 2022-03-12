@@ -18,11 +18,6 @@ public class UsersRegistrationService {
     private final UsersMapStructMapper usersMapper;
 
 
-    public User registerUser(final UserDto userDto) {
-        var user = usersMapper.mapFromDtoToDomain(userDto);
-        return usersRepository.save(user);
-    }
-
     public UserDto findUserDataById(final Long id) {
         var user = usersRepository.findByUserId(id).orElseThrow(NoSuchElementException::new);
         return usersMapper.mapFromDomainToDto(user);
