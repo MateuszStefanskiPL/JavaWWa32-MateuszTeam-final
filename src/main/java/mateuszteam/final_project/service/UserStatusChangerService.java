@@ -26,9 +26,10 @@ public class UserStatusChangerService {
     private static final BigDecimal SCORE_FOR_GOLD_STATUS = BigDecimal.valueOf(5000D);
     private static final BigDecimal SCORE_FOR_PLATINUM_STATUS = BigDecimal.valueOf(10000D);
 
-    private final UsersRepository usersRepository;
-    private final UsersMapStructMapper mapper;
-    private final OrdersRepository ordersRepository;
+    private UsersRepository usersRepository;
+    private UsersMapStructMapper mapper;
+    private OrdersRepository ordersRepository;
+
 
     public void saveChangedUsers() {
         List<User> changedUsers = changeUsersStatus().stream()
@@ -45,7 +46,7 @@ public class UserStatusChangerService {
 
     }
 
-    private UserDto changeUserStatus(UserDto user) {
+    public UserDto changeUserStatus(UserDto user) {
 
         if (user.getMoneySpent().compareTo(SCORE_FOR_PLATINUM_STATUS) > 0) {
             changeStatus(user, UserStatus.PLATINUM);
