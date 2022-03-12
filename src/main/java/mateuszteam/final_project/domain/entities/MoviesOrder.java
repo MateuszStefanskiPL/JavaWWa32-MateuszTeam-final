@@ -26,7 +26,7 @@ public class MoviesOrder {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "moviesOrder", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "moviesOrder", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<MovieCopy> movieCopies;
 
     @Column(name = "order_placed_date")

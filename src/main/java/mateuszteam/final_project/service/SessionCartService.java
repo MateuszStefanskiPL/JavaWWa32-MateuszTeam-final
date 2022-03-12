@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.annotation.SessionScope;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service
-@Scope(value = WebApplicationContext.SCOPE_SESSION,
-        proxyMode = ScopedProxyMode.TARGET_CLASS)
+//@Scope(value = WebApplicationContext.SCOPE_SESSION,
+//        proxyMode = ScopedProxyMode.TARGET_CLASS)
+@SessionScope
 public class SessionCartService {
 
     private List<Long> movieIds = new ArrayList<>();
@@ -53,16 +55,14 @@ public class SessionCartService {
                 .map(this::getFreeCopyForMovieId)
                 .collect(Collectors.toSet());
 
-        var order = MoviesOrder.builder().build();
+        var order = new MoviesOrder();
 
-        if (!orderedCopies.isEmpty()){
+        if (! orderedCopies.isEmpty()){
             order.setMovieCopies(orderedCopies);
-            priceCalculator.setPricePerDayAfterDiscount(order);
-            order.setOrderPlacedDate(LocalDateTime.now());
-            //todo skąd wziąc dane o userze ? security ?
+            //priceCalculator.setPricePerDayAfterDiscount(order);
+            //order.setOrderPlacedDate(LocalDateTime.now());    //ustawiane w OrdersService#acceptOrder
+            //todo skąd wziąc dane o userze ? security ?    //ustawiane w OrdersService#placeOrderFromCart
         }
-
-
 
         //ustalic, czy sa dostepne wolne kopie dla wybranych filmow
 
@@ -74,14 +74,14 @@ public class SessionCartService {
     }
 
     private MovieCopy getFreeCopyForMovieId(Long movieId) {
-//        var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
-//                .filter(copy -> copy.getMoviesOrder() == null)
-//                .findFirst();
+        var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
+                .filter(copy -> copy.getMoviesOrder() == null)
+                .findFirst();
 
-        var copyOptional = copiesRepository.findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(movieId);
+        //zwroc pierwsza wolna kopie (orderId == null) dla filmu o podanym id
+        //var copyOptional = copiesRepository.findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(movieId);
 
-
-        return copyOptional;
+        return copyOptional.get();
     }
 
 

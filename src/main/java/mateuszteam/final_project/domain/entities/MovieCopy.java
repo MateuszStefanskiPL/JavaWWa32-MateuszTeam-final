@@ -20,11 +20,11 @@ public class MovieCopy {
     @Column(name = "id")
     private long copyId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "movie_id",referencedColumnName = "id")
     private Movie movie;
 
-    @ManyToOne
+    @ManyToOne//(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "order_id",referencedColumnName = "id")
     private MoviesOrder moviesOrder;
 }

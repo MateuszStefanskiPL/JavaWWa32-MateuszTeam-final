@@ -5,6 +5,7 @@ import mateuszteam.final_project.domain.dto.MoviesOrderDto;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.OrderStatus;
 import mateuszteam.final_project.mapper.OrdersMapStructMapper;
+import mateuszteam.final_project.repository.MoviesCopiesRepository;
 import mateuszteam.final_project.repository.OrdersRepository;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,12 @@ public class OrdersService {
     private final OrdersMapStructMapper ordersMapper;
     private final SessionCartService cartService;
     private final UsersRepository usersRepository;
+    private final OrderPriceCalculator priceCalculator;
+    private final MoviesCopiesRepository copiesRepository;
 
+    public MoviesOrderDto get(Long orderid) {
+        return ordersMapper.mapFromDomainToDto(ordersRepository.findById(orderid).get());
+    }
 
     public List<MoviesOrderDto> findAllOrdersByUserId(final Long id) {
         return ordersRepository.findByUser_userId(id, PageRequest.of(3,6))
@@ -47,20 +53,29 @@ public class OrdersService {
     }
 
     //POST /orders - utworzenie Order po raz pierwszy
-    public MoviesOrder placeOrderInCart(String userEmail) {
+    public MoviesOrderDto placeOrderFromCart(String userEmail) {
         var cartToOrder = cartService.toOrder();
-        var user = usersRepository.findByEmail(userEmail);
+        var user = usersRepository.findByEmail(userEmail);  //pozniej via Spring Security
         cartToOrder.setUser(user.get());
-        return cartToOrder;
+        priceCalculator.setPricePerDayAfterDiscount(cartToOrder);
+        cartToOrder = ordersRepository.save(cartToOrder);   //chcemy aby w zwrotce bylo ustawione orderId do odwolania sie
+        setOrderForCopies(cartToOrder);
+        return ordersMapper.mapFromDomainToDto(ordersRepository.save(cartToOrder));
+    }
+
+    private void setOrderForCopies(MoviesOrder order) {
+        for(var copy : order.getMovieCopies()) {
+            copy.setMoviesOrder(order);
+        }
     }
 
     //tutaj dostajemy sie poprzez PATCH orders/{id}/accept
     //wygeneruj zdarzenie (event) OrderPlaced ktore spowoduje wyslanie maila o zlozonym zamowieniu
-    public MoviesOrder acceptOrder(Long orderId) {
+    public MoviesOrderDto acceptOrder(Long orderId) {
         var order = ordersRepository.findById(orderId).get();
         order.setOrderStatus(OrderStatus.ACCEPTED);
         order.setOrderPlacedDate(LocalDateTime.now());
-        return order;
+        return ordersMapper.mapFromDomainToDto(order);
     }
 
     //usuwanie zamowien ktore nie zostaly zaakceptowane - raz na dobe

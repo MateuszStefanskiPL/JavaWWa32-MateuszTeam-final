@@ -28,8 +28,8 @@ public class MoviesStatusChangerService {
     private final MoviesRepository moviesRepository;
     private final MoviesMapStructMapper mapper;
 
-    //@Scheduled(cron = "@daily")
-    @Scheduled(fixedDelay=10000) //co 10tys ms = 10 sec
+    @Scheduled(cron = "@daily")
+    //@Scheduled(fixedDelay=10000) //co 10tys ms = 10 sec
     public void saveUpdatedMovies(){
         List<Movie> changedMovies = updateMovieStatus().stream()
                 .map(mapper::mapFromDtoToDomain)

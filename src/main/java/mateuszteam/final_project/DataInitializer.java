@@ -2,6 +2,7 @@ package mateuszteam.final_project;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.entities.*;
+import mateuszteam.final_project.repository.MoviesCopiesRepository;
 import mateuszteam.final_project.repository.MoviesRepository;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,13 @@ public class DataInitializer implements CommandLineRunner {
 
     private final UsersRepository usersRepository;
     private final MoviesRepository moviesRepository;
+    private final MoviesCopiesRepository copiesRepository;
 
 
     @Override
     public void run(final String... args) throws Exception {
         initializeData();
-
+        //initializeCopies();
     }
 
     private void initializeData(){
@@ -75,10 +77,7 @@ public class DataInitializer implements CommandLineRunner {
                 .user(user3)
                 .build();
 
-
         usersRepository.saveAll(Arrays.asList(user1,user2,user3));
-
-
 
         var movie1 = Movie.builder()
                 .title("A Nightmare on Elm Street")
@@ -113,34 +112,7 @@ public class DataInitializer implements CommandLineRunner {
                 .averageScore(0.0D)
                 .build();
 
-        var copy1 = MovieCopy.builder()
-                .movie(movie1)
-                .moviesOrder(null)
-                .build();
-        var copy2 = MovieCopy.builder()
-                .movie(movie1)
-                .moviesOrder(null)
-                .build();
-
-        var copy3 = MovieCopy.builder()
-                .movie(movie2)
-                .moviesOrder(null)
-                .build();
-
-        var copy4 = MovieCopy.builder()
-                .movie(movie2)
-                .moviesOrder(null)
-                .build();
-
-        var copy5 = MovieCopy.builder()
-                .movie(movie3)
-                .moviesOrder(null)
-                .build();
-
-        var copy6 = MovieCopy.builder()
-                .movie(movie3)
-                .moviesOrder(null)
-                .build();
+        moviesRepository.saveAll(Arrays.asList(movie1,movie2,movie3));
 
         var rating1 = Rating.builder()
                 .text("I like it")
@@ -158,13 +130,36 @@ public class DataInitializer implements CommandLineRunner {
                 .dateOfEvaluation(LocalDateTime.now().minusDays(2))
                 .build();
 
-        moviesRepository.saveAll(Arrays.asList(movie1,movie2,movie3));
-
-
-
     }
 
+    private void initializeCopies() {
+        //przy zapisie copies mamy 'failed to persist detached entity movie'
+        var movie1 = moviesRepository.findById(1L).get();
+        var copy1 = MovieCopy.builder()
+                .movie(movie1)
+                .build();
+        var copy2 = MovieCopy.builder()
+                .movie(movie1)
+                .build();
 
+        var movie2 = moviesRepository.findById(2L).get();
+        var copy3 = MovieCopy.builder()
+                .movie(movie2)
+                .build();
+        var copy4 = MovieCopy.builder()
+                .movie(movie2)
+                .build();
+
+        var movie3 = moviesRepository.findById(3L).get();
+        var copy5 = MovieCopy.builder()
+                .movie(movie3)
+                .build();
+        var copy6 = MovieCopy.builder()
+                .movie(movie3)
+                .build();
+
+        copiesRepository.saveAll(Arrays.asList(copy1, copy2, copy3, copy4, copy5, copy6));
+    }
 
 
 

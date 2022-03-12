@@ -8,11 +8,15 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+//@Data
+@Getter
+@Setter
 public class MoviesOrderDto {
 
     @NotNull
@@ -35,5 +39,9 @@ public class MoviesOrderDto {
     @NotNull
     @Digits(integer = 10, fraction = 2)
     private BigDecimal price;
+
+    private BigDecimal pricePerDay;
+
+    private Set<Long> copies = new HashSet<>();
 
 }

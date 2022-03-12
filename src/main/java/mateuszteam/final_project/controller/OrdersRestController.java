@@ -20,9 +20,14 @@ public class OrdersRestController {
     private final OrdersService ordersService;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public List<MoviesOrderDto> displayAllOrdersForUser(@PathVariable Long id){
         return ordersService.findAllOrdersByUserId(id);
+    }
+
+    @GetMapping("/order/{id}")
+    MoviesOrderDto get(@PathVariable Long id){
+        return ordersService.get(id);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -30,22 +35,22 @@ public class OrdersRestController {
     public List<MoviesOrderDto> displayOrdersByStatus(@PathVariable OrderStatus status){
         return ordersService.findAllOrdersByStatus(status);
     }
-
+/*
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(name = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE)
     public MoviesOrder submitOrder(@RequestBody MoviesOrderDto moviesOrderDto){
         return ordersService.addNewOrder(moviesOrderDto);
     }
-
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping(name = "/{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
-//    public MoviesOrder putOrderToCart(@PathVariable String email){
-//        return ordersService.placeOrderInCart(email);
-//    }
+*/
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping    // /orders?email=xxx
+    public MoviesOrderDto putOrderToCart(@RequestParam String email){
+        return ordersService.placeOrderFromCart(email);
+    }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PatchMapping("/{orderId}/accept")
-    public MoviesOrder acceptOrderByOrderID(@PathVariable Long orderId) {
+    public MoviesOrderDto acceptOrderByOrderID(@PathVariable Long orderId) {
         return ordersService.acceptOrder(orderId);
     }
 
