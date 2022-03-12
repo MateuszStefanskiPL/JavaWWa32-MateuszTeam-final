@@ -2,11 +2,14 @@ package mateuszteam.final_project;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.entities.*;
+import mateuszteam.final_project.repository.AccessRuleRepository;
 import mateuszteam.final_project.repository.MoviesCopiesRepository;
 import mateuszteam.final_project.repository.MoviesRepository;
 import mateuszteam.final_project.repository.UsersRepository;
+import mateuszteam.final_project.security.AccessRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -23,12 +26,19 @@ public class DataInitializer implements CommandLineRunner {
     private final UsersRepository usersRepository;
     private final MoviesRepository moviesRepository;
     private final MoviesCopiesRepository copiesRepository;
-
+    private final AccessRuleRepository accessRuleRepository;
 
     @Override
     public void run(final String... args) throws Exception {
         initializeData();
         //initializeCopies();
+        initializeAccessRules();
+    }
+
+    private void initializeAccessRules() {
+        var acr1 = new AccessRule(HttpMethod.POST, "/copies/movie/*", "copies:write");
+
+        accessRuleRepository.saveAll(Arrays.asList(acr1));
     }
 
     private void initializeData(){

@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 class UserStatusChangerServiceTest {
 
     public static final Long USER_ID = 1L;
-    public static final User USER = new User(USER_ID, "user1@email.com", "password1", BigDecimal.valueOf(1050.0D), UserStatus.SILVER);
+    //public static final User USER = new User(USER_ID, "user1@email.com", "password1", BigDecimal.valueOf(1050.0D), UserStatus.SILVER);
 
     @Mock
     private UsersRepository usersRepository;

@@ -30,7 +30,7 @@ public class MoviesCopiesRestController {
       return copiesService.findAllCopiesForSingleMovie(id);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("/movie/{id}")
     MovieCopyDto addNewCopy(@PathVariable Long id) {
         return copiesService.create(id);
     }

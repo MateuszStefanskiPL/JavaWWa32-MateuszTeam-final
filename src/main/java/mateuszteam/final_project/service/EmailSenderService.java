@@ -1,8 +1,10 @@
 package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
+import mateuszteam.final_project.domain.events.OrderPlacedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,14 @@ public class EmailSenderService {
 
     void setMailFrom(String mailFrom) {
         this.mailFrom = mailFrom;
+    }
+
+    @EventListener
+    void handleOrderPlacedEvent(OrderPlacedEvent event) throws Exception {
+        this.sendMail(event.getUserEmail(),
+                String.format("Zamówienie ID=%d złożone", event.getOrderId()),
+                "Dziękujemy za złożone <bold>zamówienie</bold>!",
+                true);
     }
 
 }
