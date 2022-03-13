@@ -14,4 +14,6 @@ public class ResourceNotFoundException extends RuntimeException {
         super(String.format("%s looked up by '%s' not found", entityName, searchParam));
     }
 
+
+
 }
