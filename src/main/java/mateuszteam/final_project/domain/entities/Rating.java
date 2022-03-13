@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 @Table(name = "rating")
 public class Rating {
 
+    public Rating(Movie movie, double score) {
+        this.movie = movie;
+        this.score = score;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -24,7 +29,7 @@ public class Rating {
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "movie_id",referencedColumnName = "id")
     private Movie movie;
 
