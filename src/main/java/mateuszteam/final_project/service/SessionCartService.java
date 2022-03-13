@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import mateuszteam.final_project.domain.entities.MovieCopy;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.exceptions.CopiesNotFoundException;
+import mateuszteam.final_project.exceptions.DuplicateOrderException;
+import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.repository.MoviesCopiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +28,13 @@ public class SessionCartService {
     private List<Long> movieIds = new ArrayList<>();
 
     private final MoviesCopiesRepository copiesRepository;
+    private final OrderPriceCalculator priceCalculator;
 
     public List<Long> addMovie(Long movieId) {
         if (!movieIds.contains(movieId)) {
             movieIds.add(movieId);
+        }else {
+            throw new DuplicateOrderException("You can`t borrow two copies of the same movie");
         }
         return getCartEntries();
     }
@@ -37,6 +42,8 @@ public class SessionCartService {
     public List<Long> removeMovie(final Long movieId) {
         if (movieIds.contains(movieId)) {
             movieIds.remove(movieId);
+        }else {
+            throw new ResourceNotFoundException(movieId);
         }
         return getCartEntries();
     }
@@ -55,11 +62,6 @@ public class SessionCartService {
 
         if (!orderedCopies.isEmpty()){
             order.setMovieCopies(orderedCopies);
-            //priceCalculator.setPricePerDayAfterDiscount(order);
-            //order.setOrderPlacedDate(LocalDateTime.now());    //ustawiane w OrdersService#acceptOrder
-            //todo skąd wziąc dane o userze ? security ?    //ustawiane w OrdersService#placeOrderFromCart
-        }else {
-            throw new CopiesNotFoundException("No free copies available");
         }
 
         //ustalic, czy sa dostepne wolne kopie dla wybranych filmow
@@ -74,11 +76,17 @@ public class SessionCartService {
     //todo test it, bo logika operacji na danych jest po stronie JVM a nie bazy danych
     //albo refactor, wyniesc to 'na gore', albo Mockito.mock(copiesRepository) + when(copiesRepositoryMock.findAllByMovie...).thenReturn(movie)
     private MovieCopy getFreeCopyForMovieId(Long movieId) {
-        var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
-                .filter(copy -> copy.getMoviesOrder() == null)
+        var freeCopy = getAllCopiesByMovieId(movieId).stream()
+                .filter(c -> c.getMoviesOrder() == null)
                 .findFirst();
+        if (freeCopy.isEmpty()){
+            throw new CopiesNotFoundException("No free copies of movie movieId=%d available");
+        }
+        return freeCopy.get();
+    }
 
-        return copyOptional.get();
+    private List<MovieCopy> getAllCopiesByMovieId(Long movieId){
+       return copiesRepository.findAllByMovie_movieId(movieId);
     }
 
 
