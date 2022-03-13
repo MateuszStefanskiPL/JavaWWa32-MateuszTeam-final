@@ -1,6 +1,7 @@
 package mateuszteam.final_project.controller;
 
 import mateuszteam.final_project.domain.dto.ErrorResponse;
+import mateuszteam.final_project.domain.dto.NotEnoughFreeCopiesErrorResponse;
 import mateuszteam.final_project.exceptions.CopiesNotFoundException;
 import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ public class GlobalRestControllerErrorHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CopiesNotFoundException.class)
-    ErrorResponse handleOfferNotFoundException(final CopiesNotFoundException exception) {
-        return new ErrorResponse(exception.getMessage());
+    NotEnoughFreeCopiesErrorResponse handleCopiesNotFoundException(final CopiesNotFoundException exception) {
+        return new NotEnoughFreeCopiesErrorResponse(exception.getMessage(), exception.getMoviesWithoutFreeCopies());
     }
 
 }

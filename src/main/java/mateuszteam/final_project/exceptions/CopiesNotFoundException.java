@@ -1,12 +1,17 @@
 package mateuszteam.final_project.exceptions;
 
+import lombok.Getter;
+
+import java.util.List;
+
+@Getter
 public class CopiesNotFoundException extends RuntimeException {
 
-    public CopiesNotFoundException(String msg) {
-        super(msg);
+    private List<Long> moviesWithoutFreeCopies;
+
+    public CopiesNotFoundException(List<Long> moviesWithoutFreeCopies) {
+        super("Brak wolnych kopii dla tych filmow: " + moviesWithoutFreeCopies);
+        this.moviesWithoutFreeCopies = moviesWithoutFreeCopies;
     }
 
-    public CopiesNotFoundException(String msg, Long id) {
-        super(msg);
-    }
 }

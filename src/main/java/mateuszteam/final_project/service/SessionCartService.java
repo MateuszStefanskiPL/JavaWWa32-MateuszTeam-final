@@ -1,5 +1,7 @@
 package mateuszteam.final_project.service;
 
+import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mateuszteam.final_project.domain.entities.MovieCopy;
@@ -15,6 +17,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -58,35 +61,54 @@ public class SessionCartService {
                 .map(this::getFreeCopyForMovieId)
                 .collect(Collectors.toSet());
 
-        var order = new MoviesOrder();
-
-        if (!orderedCopies.isEmpty()){
-            order.setMovieCopies(orderedCopies);
+        //caly koszyk mozna konwertowac na zamowienie
+        if(freeCopiesForAllMoviesAvailable(orderedCopies)) {
+            var order = new MoviesOrder();
+            order.setMovieCopies(orderedCopies.stream()
+                    .map(CopySearchResult::getCopy)
+                    .collect(Collectors.toSet()));
+            return order;
         }
 
-        //ustalic, czy sa dostepne wolne kopie dla wybranych filmow
+        //nie wszystkie zamawiane filmy posiadaja wolne kopie, modyfikacja koszyka
+        var moviesWihoutFreeCopies = orderedCopies.stream()
+                .filter(result -> result.getCopy() == null)
+                .map(CopySearchResult::getMovieId)
+                .collect(Collectors.toList());
+        //modyfikuj koszyk usuwajac z niego filmy dla ktorych nie ma wolnych kopii
+        movieIds.removeAll(moviesWihoutFreeCopies);
 
-        //jesli tak, wyliczamy cene pricePerDay na podstawie filmow oraz dodajemy kopie i zwracamy Order
+        throw new CopiesNotFoundException(moviesWihoutFreeCopies);
+    }
 
-        //jesli nie, modyfikujemy koszyk i zwracamy uzytkownikowi zamowienie ze zmodyfikowanego koszyka
-
-        return order;
+    private boolean freeCopiesForAllMoviesAvailable(Set<CopySearchResult> searchResults) {
+        return searchResults.stream()
+                .noneMatch(result -> result.getCopy() == null);
     }
 
     //todo test it, bo logika operacji na danych jest po stronie JVM a nie bazy danych
     //albo refactor, wyniesc to 'na gore', albo Mockito.mock(copiesRepository) + when(copiesRepositoryMock.findAllByMovie...).thenReturn(movie)
-    private MovieCopy getFreeCopyForMovieId(Long movieId) {
+    private CopySearchResult getFreeCopyForMovieId(Long movieId) {
         var freeCopy = getAllCopiesByMovieId(movieId).stream()
                 .filter(c -> c.getMoviesOrder() == null)
                 .findFirst();
         if (freeCopy.isEmpty()){
-            throw new CopiesNotFoundException("No free copies of movie movieId=%d available");
+            return new CopySearchResult(movieId, null);
         }
-        return freeCopy.get();
+        return new CopySearchResult(movieId, freeCopy.get());
     }
 
     private List<MovieCopy> getAllCopiesByMovieId(Long movieId){
        return copiesRepository.findAllByMovie_movieId(movieId);
+    }
+
+    //klasa reprezentuje wynik poszukiwania wolnej kopii dla danego filmu
+    //jesli copyId != null to wolna kopia dla tego filmu istnieje
+    @Getter
+    @RequiredArgsConstructor
+    static class CopySearchResult {
+        private final Long movieId;
+        private final MovieCopy copy;
     }
 
 
