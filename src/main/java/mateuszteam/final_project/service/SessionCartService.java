@@ -29,7 +29,6 @@ public class SessionCartService {
 
     private List<Long> movieIds = new ArrayList<>();
 
-    private final OrderPriceCalculator priceCalculator;
     private final MoviesCopiesRepository copiesRepository;
 
     public List<Long> addMovie(Long movieId) {
@@ -50,6 +49,7 @@ public class SessionCartService {
         return Collections.unmodifiableList(movieIds);
     }
 
+    //todo test it -> Unit test (metode zasila tylko pole z id-kami)
     public MoviesOrder toOrder() {
         var orderedCopies = getCartEntries().stream()
                 .map(this::getFreeCopyForMovieId)
@@ -73,6 +73,8 @@ public class SessionCartService {
         return order;
     }
 
+    //todo test it, bo logika operacji na danych jest po stronie JVM a nie bazy danych
+    //albo refactor, wyniesc to 'na gore', albo Mockito.mock(copiesRepository) + when(copiesRepositoryMock.findAllByMovie...).thenReturn(movie)
     private MovieCopy getFreeCopyForMovieId(Long movieId) {
         var copyOptional = copiesRepository.findAllByMovie_movieId(movieId).stream()
                 .filter(copy -> copy.getMoviesOrder() == null)

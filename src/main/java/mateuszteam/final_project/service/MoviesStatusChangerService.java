@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,27 +25,25 @@ public class MoviesStatusChangerService {
     private static final LocalDate NEWEST_DATE = LocalDate.now().minusMonths(3);
     private static final LocalDate STANDARD_DATE = LocalDate.now().minusYears(1);
 
-
     private final MoviesRepository moviesRepository;
-    private final MoviesMapStructMapper mapper;
 
     @Scheduled(cron = "@daily")
     public void saveUpdatedMovies(){
-        List<Movie> changedMovies = updateMoviesStatus().stream()
-                .map(mapper::mapFromDtoToDomain)
-                .collect(Collectors.toList());
+        List<Movie> changedMovies = new ArrayList<>(updateMoviesStatus());
         moviesRepository.saveAll(changedMovies);
     }
 
-    private List<MovieDto> updateMoviesStatus(){
-        var allMovies = moviesRepository.findAll().stream()
-                .map(mapper::mapFromDomainToDto)
-                .map(this::updateMovieStatus)
-                .collect(Collectors.toList());
-        return allMovies;
+    private List<Movie> updateMoviesStatus(){
+        return updateMoviesStatus(moviesRepository.findAll());
     }
 
-    private MovieDto updateMovieStatus(MovieDto movie){
+    //todo: test it -> zasilic lista 4 filmow i sprawdzic czy na wyjsciu zmienily sie statusy
+    List<Movie> updateMoviesStatus(List<Movie> movies) {
+        movies.forEach(this::updateMovieStatus);
+        return movies;
+    }
+
+    private Movie updateMovieStatus(Movie movie){
         if(movie.getReleaseDate().isAfter(PREMIER_DATE)) {
             changeStatus(movie,MovieStatus.PREMIERE);
         }
@@ -61,7 +60,7 @@ public class MoviesStatusChangerService {
         return movie;
     }
 
-    private void changeStatus(MovieDto movie, MovieStatus status) {
+    private void changeStatus(Movie movie, MovieStatus status) {
         movie.setMovieStatus(status);
     }
 }

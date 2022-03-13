@@ -1,6 +1,7 @@
 package mateuszteam.final_project.service;
 
 import mateuszteam.final_project.domain.dto.UserDto;
+import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,9 +31,9 @@ class UserStatusChangerServiceTest {
     }
 
 
-    UserDto returnUserDtoForTest(){
+    User returnUserDtoForTest(){
 
-        return  UserDto.builder()
+        return  User.builder()
                 .userId(1L)
                 .email("user1@email.com")
                 .password("password1")

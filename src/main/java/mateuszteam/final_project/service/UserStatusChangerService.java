@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service
-public class UserStatusChangerService {
+public class UserStatusChangerService { //todo: refactor + test analogiczny jak dla MovieChangerService
 
     private static final BigDecimal SCORE_FOR_SILVER_STATUS = BigDecimal.valueOf(1000D);
     private static final BigDecimal SCORE_FOR_GOLD_STATUS = BigDecimal.valueOf(5000D);
@@ -31,22 +31,20 @@ public class UserStatusChangerService {
     private OrdersRepository ordersRepository;
 
 
-    public void saveChangedUsers() {
-        List<User> changedUsers = changeUsersStatus().stream()
-                .map(mapper::mapFromDtoToDomain)
-                .collect(Collectors.toList());
-        usersRepository.saveAll(changedUsers);
+    public void saveChangedUsers(String userEmail) {
+        var user = usersRepository.findByEmail(userEmail).get();
+        changeUserStatus(user);
+        usersRepository.save(user);
     }
 
-    private List<UserDto> changeUsersStatus() {
+    //nie uzywana metoda, poniewaz powyzej aktualizujemy status uzytkownika po kazdym zamowieniu
+    private List<User> changeUsersStatus() {
         return usersRepository.findAll().stream()
-                .map(mapper::mapFromDomainToDto)
                 .map(this::changeUserStatus)
                 .collect(Collectors.toList());
-
     }
 
-    public UserDto changeUserStatus(UserDto user) {
+    public User changeUserStatus(User user) {
 
         if (user.getMoneySpent().compareTo(SCORE_FOR_PLATINUM_STATUS) > 0) {
             changeStatus(user, UserStatus.PLATINUM);
@@ -62,13 +60,13 @@ public class UserStatusChangerService {
         return user;
     }
 
-    private void changeStatus(UserDto user, UserStatus status) {
+    private void changeStatus(User user, UserStatus status) {
         user.setUserStatus(status);
     }
 
     @EventListener
     void handleOrderPlacedEvent(OrderPlacedEvent event) throws Exception {
-        this.saveChangedUsers();
+        this.saveChangedUsers(event.getUserEmail());
     }
 
 }

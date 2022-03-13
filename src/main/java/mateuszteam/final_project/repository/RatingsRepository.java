@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface RatingsRepository extends CrudRepository<Rating, Long> {
 
+    //todo test it
     Page<Rating> findRatingsByMovie_movieIdOrderByScoreDesc(Long movieId, Pageable pageable);
 
     List<Rating> findRatingsByMovie_MovieId(Long movieId);

@@ -1,19 +1,14 @@
 package mateuszteam.final_project.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mateuszteam.final_project.domain.entities.MovieStatus;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.UserStatus;
-import mateuszteam.final_project.repository.MoviesCopiesRepository;
-import mateuszteam.final_project.repository.OrdersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Component
 public class OrderPriceCalculator {
 
@@ -27,62 +22,56 @@ public class OrderPriceCalculator {
     private static final BigDecimal NEWEST_MOVIE_PRICE_IMPACT = BigDecimal.valueOf(2.0D);
     private static final BigDecimal CLASSIC_MOVIE_PRICE_IMPACT = BigDecimal.valueOf(0.5D);
 
-
-    private final OrdersRepository ordersRepository;
-    private final MoviesCopiesRepository copiesRepository;
-
     public BigDecimal calculateTotalOrderPrice(){
         //trzeba pomnożyć cenę za dzień razy ilość dni
         return null;
     }
 
-    public void setPricePerDayAfterDiscount(MoviesOrder order){
-        var pricePerDay = calculateOrderPricePerDay(order);
-        order.setPricePerDay(pricePerDay);
-        log.info("Price per day for order nr " + order.getOrderId() + "has been set to " + pricePerDay);
-    }
-
-    private BigDecimal calculateOrderPricePerDay(MoviesOrder order) {
+    //todo test it
+    public BigDecimal calculateOrderPricePerDay(MoviesOrder order) {
         var userStatus = order.getUser().getUserStatus();
         var movieStatus = order.getMovieCopies().stream().findFirst().get().getMovie().getMovieStatus();
-        var pricePerDay = calculateOrderPriceByMovieStatus(movieStatus, userStatus);
+        var pricePerDay = calculatePricePerDay(movieStatus, userStatus);
 
         return pricePerDay;
     }
 
-    private BigDecimal calculateOrderPriceByUserStatus(UserStatus userStatus) {
-        var finalPrice = STANDARD_MOVIE_PRICE;
-        switch (userStatus) {
-            case SILVER:
-                finalPrice = STANDARD_MOVIE_PRICE.multiply(SILVER_USER_DISCOUNT);
-                break;
-            case GOLD:
-                finalPrice = STANDARD_MOVIE_PRICE.multiply(GOLD_USER_DISCOUNT);
-                break;
-            case PLATINUM:
-                finalPrice = STANDARD_MOVIE_PRICE.multiply(PLATINUM_USER_DISCOUNT);
-                break;
-            default:
-                finalPrice = STANDARD_MOVIE_PRICE;
-        }
-        return finalPrice;
+    private BigDecimal calculatePricePerDay(MovieStatus movieStatus, UserStatus userStatus) {
+        var pricePerDayFactorForUserStatus = calcOrderPricePerDayFactor(userStatus);
+        var pricePerDayFactorForMovieStatus = calcOrderPricePerDayFactor(movieStatus);
+
+        return STANDARD_MOVIE_PRICE
+                .multiply(pricePerDayFactorForUserStatus
+                        .multiply(pricePerDayFactorForMovieStatus));
     }
 
-    private BigDecimal calculateOrderPriceByMovieStatus(MovieStatus movieStatus, UserStatus userStatus) {
-        var finalPrice = calculateOrderPriceByUserStatus(userStatus);
+    //factor => czynnik
+    private BigDecimal calcOrderPricePerDayFactor(UserStatus userStatus) {
+        switch (userStatus) {
+            case SILVER:
+                return BigDecimal.ONE;
+            case GOLD:
+                return GOLD_USER_DISCOUNT;
+            case PLATINUM:
+                return PLATINUM_USER_DISCOUNT;
+            default:
+                return BigDecimal.ONE;
+        }
+    }
 
+    private BigDecimal calcOrderPricePerDayFactor(MovieStatus movieStatus) {
         switch (movieStatus) {
             case CLASSIC:
-                finalPrice.multiply(CLASSIC_MOVIE_PRICE_IMPACT);
-                break;
+                return CLASSIC_MOVIE_PRICE_IMPACT;
             case NEWEST:
-                finalPrice.multiply(NEWEST_MOVIE_PRICE_IMPACT);
-                break;
+                return NEWEST_MOVIE_PRICE_IMPACT;
             case PREMIERE:
-                finalPrice.multiply(PREMIERE_MOVIE_PRICE_IMPACT);
-                break;
+                return PREMIERE_MOVIE_PRICE_IMPACT;
+            case STANDARD:
+                return BigDecimal.ONE;
+            default:    //i tak nigdy nie osiagnie tego miejsca
+                return BigDecimal.ONE;
         }
-        return finalPrice;
     }
 
 

@@ -56,11 +56,12 @@ public class OrdersService {
     }
 
     //POST /orders - utworzenie Order po raz pierwszy
+    //todo test integracyjny @SpringBootTest (zostawic na koniec)
     public MoviesOrderDto placeOrderFromCart(String userEmail) {
         var cartToOrder = cartService.toOrder();
         var user = getByEmail(userEmail);
         cartToOrder.setUser(user);
-        priceCalculator.setPricePerDayAfterDiscount(cartToOrder);
+        cartToOrder.setPricePerDay(priceCalculator.calculateOrderPricePerDay(cartToOrder));
         cartToOrder = ordersRepository.save(cartToOrder);   //chcemy aby w zwrotce bylo ustawione orderId do odwolania sie
         setOrderForCopies(cartToOrder);
         return ordersMapper.mapFromDomainToDto(ordersRepository.save(cartToOrder));
@@ -69,7 +70,7 @@ public class OrdersService {
     private User getByEmail(String userEmail) {
         var user = usersRepository.findByEmail(userEmail);  //pozniej via Spring Security
         if(user.isEmpty()) {
-            throw new ResourceNotFoundException(userEmail);
+            throw new ResourceNotFoundException(userEmail, "User");
         }
         return user.get();
     }
@@ -100,6 +101,8 @@ public class OrdersService {
     }
 
     //usuwanie zamowien ktore nie zostaly zaakceptowane - raz na dobe
+    //todo test it jako test integracyjny LUB
+    //@DataJpaTest + new OrdersService(final OrdersRepository ordersRepostitory, null, null...) - sprawdzic
     @Scheduled(cron = "@daily")
     void removeNotAcceptedOrders() {
         var ordersToRemove = ordersRepository.findAll().stream()
