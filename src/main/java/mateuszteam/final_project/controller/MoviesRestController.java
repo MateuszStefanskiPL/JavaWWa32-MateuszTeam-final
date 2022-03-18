@@ -17,7 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class MoviesRestController {
 
-
     private final MoviesService moviesService;
 
     @ResponseStatus(HttpStatus.OK)
@@ -49,6 +48,14 @@ public class MoviesRestController {
     public Movie addNewMovie(@RequestBody MovieDto movieDto){
        return moviesService.addMovie(movieDto);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/remove/{id}")
+    public void removeMovieByMovieId(@PathVariable Long id){
+        moviesService.deleteMovie(id);
+    }
+
+
 
 
 

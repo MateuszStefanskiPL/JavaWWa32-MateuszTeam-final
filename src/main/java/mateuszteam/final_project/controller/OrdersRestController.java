@@ -2,12 +2,10 @@ package mateuszteam.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.MoviesOrderDto;
-import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.OrderStatus;
 import mateuszteam.final_project.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class OrdersRestController {
 
     @GetMapping("/order/{id}")
     MoviesOrderDto get(@PathVariable Long id){
-        return ordersService.get(id);
+        return ordersService.getOrderById(id);
     }
 
     @ResponseStatus(HttpStatus.OK)

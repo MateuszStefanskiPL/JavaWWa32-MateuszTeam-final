@@ -31,24 +31,32 @@ public class OrdersService {
     private final OrderPriceCalculator priceCalculator;
     private final ApplicationEventPublisher eventPublisher;
 
-    public MoviesOrderDto get(Long orderid) {
-        return ordersMapper.mapFromDomainToDto(ordersRepository.findById(orderid).get());
+    public MoviesOrderDto getOrderById(Long orderId) {
+        if (ordersRepository.findById(orderId).isEmpty()){
+            throw new ResourceNotFoundException(orderId);
+        }
+        return ordersMapper.mapFromDomainToDto(ordersRepository.findById(orderId).get());
     }
 
-    public List<MoviesOrderDto> findAllOrdersByUserId(final Long id) {
-        return ordersRepository.findByUser_userId(id, PageRequest.of(3,6))
+    public List<MoviesOrderDto> findAllOrdersByUserId(final Long userId) {
+        if (ordersRepository.findByUser_userId(userId, PageRequest.of(3,6)).isEmpty()){
+            throw new ResourceNotFoundException("Orders", "id");
+        }
+        return ordersRepository.findByUser_userId(userId, PageRequest.of(3,6))
                 .stream()
                 .map(o -> ordersMapper.mapFromDomainToDto(o))
                 .collect(Collectors.toList());
     }
 
-    public MoviesOrder addNewOrder(MoviesOrderDto moviesOrderDto){
-        var order = ordersMapper.mapFromDtoToDomain(moviesOrderDto);
-        return order;
-    }
+  //  public MoviesOrder addNewOrder(MoviesOrderDto moviesOrderDto){
+//        var order = ordersMapper.mapFromDtoToDomain(moviesOrderDto);
+//        return order;
+//    }
 
     public List<MoviesOrderDto> findAllOrdersByStatus(final OrderStatus status) {
-
+        if (ordersRepository.findByOrderStatus(status).isEmpty()){
+            throw new ResourceNotFoundException("Orders", "status");
+        }
         List<MoviesOrder> orders = ordersRepository.findByOrderStatus(status);
         return orders.stream()
                 .map(o -> ordersMapper.mapFromDomainToDto(o))
@@ -82,7 +90,7 @@ public class OrdersService {
     }
 
     //tutaj dostajemy sie poprzez PATCH orders/{id}/accept
-    //wygeneruj zdarzenie (event) OrderPlaced ktore spowoduje wyslanie maila o zlozonym zamowieniu
+    // zdarzenie (event) OrderPlaced powoduje wyslanie maila o zlozonym zamowieniu
     public MoviesOrderDto acceptOrder(Long orderId) {
         var order = getForId(orderId);
         order.setOrderStatus(OrderStatus.ACCEPTED);

@@ -24,7 +24,7 @@ public class MoviesCopiesService {
     private MoviesRepository moviesRepository;
 
     public List<MovieCopyDto> findAllCopiesForSingleMovie(final Long movieId) {
-        var copies = checkCopiesAvailabilityForMovie(movieId);
+        var copies = returnAvailableCopiesForMovie(movieId);
         return copies.stream()
                 .map(copiesMapper::mapFromDomainToDto)
                 .collect(Collectors.toList());
@@ -41,13 +41,13 @@ public class MoviesCopiesService {
     }
 
     public MovieCopyDto get(Long copyId) {
-        var copy = checkCopyAvailabilityById(copyId);
+        var copy = returnCopyIfAvailableById(copyId);
         return copiesMapper.mapFromDomainToDto(copy);
     }
 
     public void removeCopy(final Long copyId) {
-        var copy = checkCopyAvailabilityById(copyId);
-        copiesRepository.deleteById(copyId);
+        var copy = returnCopyIfAvailableById(copyId);
+        copiesRepository.deleteById(copy.getCopyId());
     }
 
     List<Long> getIdsFromCopiesList(List<MovieCopy> copies) {
@@ -58,7 +58,7 @@ public class MoviesCopiesService {
         return ids;
     }
 
-    MovieCopy checkCopyAvailabilityById(Long copyId) {
+    MovieCopy returnCopyIfAvailableById(Long copyId) {
         var copy = copiesRepository.findById(copyId);
         if (copy.isEmpty()) {
             throw new CopyNotFoundException(copyId);
@@ -66,8 +66,8 @@ public class MoviesCopiesService {
         return copy.get();
     }
 
-    //todo--question-- czy to jest problem ?? The call to 'get' always fails, according to its method contracts 73 line
-    List<MovieCopy> checkCopiesAvailabilityForMovie(Long movieId){
+    //todo--question-- czy to jest problem ?? The call to 'getOrderById' always fails, according to its method contracts 73 line
+    List<MovieCopy> returnAvailableCopiesForMovie(Long movieId){
         var copiesOptional = copiesRepository.findMovieCopiesByMovie_MovieId(movieId);
         if (copiesOptional.isEmpty()) {
             var copies = copiesOptional.get();

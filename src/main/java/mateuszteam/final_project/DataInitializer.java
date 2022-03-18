@@ -38,21 +38,27 @@ public class DataInitializer implements CommandLineRunner {
     private void initializeAccessRules() {
 
         var acr1 = new AccessRule(HttpMethod.POST, "/copies/**", "copies:write");
-        var arc2 = new AccessRule(HttpMethod.POST, "/movies/**", "movies:write");
-        var arc7 = new AccessRule(HttpMethod.DELETE, "/movies/**", "movies:remove");
-        var arc8 = new AccessRule(HttpMethod.POST, "/movies/**", "movies:write");
+        var arc9 = new AccessRule(HttpMethod.GET, "/copies/**", "copies:read");
+        var arc10 = new AccessRule(HttpMethod.DELETE, "/copies/**", "copies:remove");
+
 
         var arc3 = new AccessRule(HttpMethod.PUT, "/addresses/**", "addresses:update");
         var arc4 = new AccessRule(HttpMethod.POST, "/addresses/**", "addresses:write");
         var arc5 = new AccessRule(HttpMethod.GET, "/addresses/**", "addresses:read");
         var arc6 = new AccessRule(HttpMethod.DELETE, "/addresses/**", "addresses:remove");
 
-        var arc9 = new AccessRule(HttpMethod.POST, "/copies/**", "copies:write");
-        var arc10 = new AccessRule(HttpMethod.GET, "/copies/**", "copies:read");
-        var arc11 = new AccessRule(HttpMethod.DELETE, "/copies/**", "copies:remove");
+
+        var arc2 = new AccessRule(HttpMethod.POST, "/movies/**", "movies:write");
+        var arc7 = new AccessRule(HttpMethod.DELETE, "/movies/**", "movies:remove");
+        var arc8 = new AccessRule(HttpMethod.GET, "/movies/**", "movies:read");
+
+        var arc11 = new AccessRule(HttpMethod.GET, "/orders/**", "orders:read");
+        var arc12 = new AccessRule(HttpMethod.POST, "/orders/**", "orders:write");
+        var arc13 = new AccessRule(HttpMethod.PUT, "/orders/**", "orders:update");
+        var arc14 = new AccessRule(HttpMethod.DELETE, "/orders/**", "orders:remove");
 
 
-        accessRuleRepository.saveAll(Arrays.asList(acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8));
+        accessRuleRepository.saveAll(Arrays.asList(acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8,arc9,arc10,arc11,arc12,arc13,arc14));
     }
 
     private void initializeData(){

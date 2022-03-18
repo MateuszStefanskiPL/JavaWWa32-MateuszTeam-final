@@ -5,6 +5,7 @@ import mateuszteam.final_project.domain.dto.MovieDto;
 import mateuszteam.final_project.domain.dto.MovieTileDto;
 import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieStatus;
+import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.mapper.MoviesMapStructMapper;
 import mateuszteam.final_project.repository.MoviesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,27 +26,34 @@ public class MoviesService {
     private final MoviesMapStructMapper movieMapper;
 
     public List<MovieDto> findAllMovies(){
-        List<Movie> movies = (List<Movie>) moviesRepository.findAll();
+        var movies =  moviesRepository.findAll();
+        if (movies.isEmpty()){
+            throw new ResourceNotFoundException("No movies found");
+        }
         return movies.stream()
                 .map(movieMapper::mapFromDomainToDto)
                 .collect(Collectors.toList());
     }
 
     public List<MovieTileDto> findMoviesForMainPage() {
+        if (moviesRepository.findByMovieStatusIn(MS_MAIN_PAGE).isEmpty()){
+            throw new ResourceNotFoundException("No movies found");
+        }
         return moviesRepository.findByMovieStatusIn(MS_MAIN_PAGE)
                 .stream()
                 .map(movieMapper::mapFromDomainToTileDto)
                 .collect(Collectors.toList());
     }
 
-    public MovieDto findMovieFullDescription(Long id) {
-        return moviesRepository.findById(id).stream()
-                .map(movieMapper::mapFromDomainToDto)
-                .findFirst()
-                .get();
+    public MovieDto findMovieFullDescription(Long movieId) {
+        var movie = returnMovieIfAvailable(movieId);
+        return movieMapper.mapFromDomainToDto(movie);
     }
 
     public List<MovieTileDto> findMoviesWithHighestRating() {
+        if (moviesRepository.findAllByOrderByAverageScoreDesc().isEmpty()){
+            throw new ResourceNotFoundException("No movies found");
+        }
         return moviesRepository.findAllByOrderByAverageScoreDesc().stream()
                 .map(movieMapper::mapFromDomainToTileDto)
                 .collect(Collectors.toList());
@@ -54,4 +62,18 @@ public class MoviesService {
     public Movie addMovie(final MovieDto movieDto) {
         return moviesRepository.save(movieMapper.mapFromDtoToDomain(movieDto));
     }
+
+    public void deleteMovie(final Long movieId) {
+        var movie = returnMovieIfAvailable(movieId);
+        moviesRepository.deleteById(movie.getMovieId());
+    }
+
+    Movie returnMovieIfAvailable(Long movieId){
+        var movieOptional = moviesRepository.findById(movieId);
+        if (movieOptional.isEmpty()){
+            throw new ResourceNotFoundException(movieId);
+        }
+        return movieOptional.get();
+    }
+
 }
