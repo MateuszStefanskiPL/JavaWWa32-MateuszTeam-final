@@ -9,10 +9,8 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends CrudRepository<Address, Long> {
 
-    public Address findByUser_UserId(Long userId);
+    Optional<Address> findByUser_UserId(Long userId);
 
-    public Address findByUser_Email(String email);
-
-
+    Optional<Address> findByUser_Email(String email);
 
 }

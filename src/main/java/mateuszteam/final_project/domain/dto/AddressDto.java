@@ -24,12 +24,12 @@ public class AddressDto {
     @NotEmpty
     @NotNull
     @Size(min = 3, max = 250)
-    private String addressLine2;
+    private String addressLine1;
 
     @NotEmpty
     @NotNull
     @Size(min = 3, max = 250)
-    private String street;
+    private String addressLine2;
 
     @NotEmpty
     @NotNull

@@ -10,39 +10,40 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/addresses")
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class AddressRestController {
 
     private final AddressesService addressesService;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}")
-    public AddressDto displayAddressByUserId(@PathVariable Long userId){
+    public AddressDto displayAddressByUserId(@PathVariable Long userId) {
         return addressesService.findAddressByUserId(userId);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{email}")
-    public AddressDto displayAddressByUserEmail(@PathVariable String email){
+    public AddressDto displayAddressByUserEmail(@PathVariable String email) {
         return addressesService.findAddressByUserEmail(email);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new/{userId}")
-    public Address addNewAddress(@PathVariable Long userId, @RequestBody AddressDto addressDto){
+    public Address addNewAddress(@PathVariable Long userId, @RequestBody AddressDto addressDto) {
         return addressesService.addAddress(userId, addressDto);
     }
 
-
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/update/{userId}")
-    public Address updateAddressForUser(@PathVariable Long userId, @RequestBody AddressDto newAddressDto){
+    public Address updateAddressForUser(@PathVariable Long userId, @RequestBody AddressDto newAddressDto) {
         return addressesService.changeAddress(userId, newAddressDto);
     }
 
-
-
-
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/remove/{id}")
+    public void removeAddressById(@PathVariable Long id) {
+        addressesService.deleteAddressById(id);
+    }
 
 
 }

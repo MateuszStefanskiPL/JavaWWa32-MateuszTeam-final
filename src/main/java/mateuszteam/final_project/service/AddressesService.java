@@ -6,7 +6,9 @@ import mateuszteam.final_project.domain.entities.Address;
 import mateuszteam.final_project.mapper.UsersMapStructMapper;
 import mateuszteam.final_project.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service
@@ -17,28 +19,52 @@ public class AddressesService {
 
     public AddressDto findAddressByUserId(final Long userId) {
         var address = addressRepository.findByUser_UserId(userId);
-        //todo handle user not found
-        return addressMapper.mapAddressToAddressDto(address);
+
+        if (address.isEmpty()) {
+            throw new UsernameNotFoundException("No addresses for user " + userId);
+        }
+
+        return addressMapper.mapAddressToAddressDto(address.get());
     }
 
-    public AddressDto findAddressByUserEmail(final String email){
+    public AddressDto findAddressByUserEmail(final String email) {
         var address = addressRepository.findByUser_Email(email);
-        //todo handle user not found
-        return addressMapper.mapAddressToAddressDto(address);
+        if (address.isEmpty()) {
+            throw new UsernameNotFoundException("No addresses for user " + email);
+        }
+        return addressMapper.mapAddressToAddressDto(address.get());
     }
 
     public Address addAddress(final Long userId, final AddressDto addressDto) {
+        var addressOptional = addressRepository.findByUser_UserId(userId);
+        if (addressOptional.isEmpty()) {
+            throw new UsernameNotFoundException("No user  with id  " + userId);
+        }
         addressDto.setUserId(userId);
-        //todo handle user not found (bo nie mozemy dodac adresu do nieistniejacego uzytkownika)
         return addressRepository.save(addressMapper.mapAddressDtoToAddress(addressDto));
     }
 
     public Address changeAddress(final Long userId, AddressDto newAddressDto) {
-        var addressDto = addressMapper.mapAddressToAddressDto(addressRepository.findByUser_UserId(userId));
-        //todo handle user not found
-        addressDto = newAddressDto;
-        return addressRepository.save(addressMapper.mapAddressDtoToAddress(addressDto));
+
+        var addressOptional = addressRepository.findByUser_UserId(userId);
+        if (addressOptional.isEmpty()) {
+            throw new UsernameNotFoundException("No user  with id  " + userId);
+        }
+
+        var oldAddress = addressOptional.get();
+        oldAddress.setFullName(newAddressDto.getFullName());
+        oldAddress.setAddressLine1(newAddressDto.getAddressLine1());
+        oldAddress.setAddressLine2(newAddressDto.getAddressLine2());
+        oldAddress.setPhone(newAddressDto.getPhone());
+
+        return addressRepository.save(oldAddress);
     }
 
-
+    public void deleteAddressById(final Long id) {
+        var addressOptional = addressRepository.findByUser_UserId(id);
+        if (addressOptional.isEmpty()) {
+            throw new UsernameNotFoundException("No user  with id  " + id);
+        }
+        addressRepository.deleteById(id);
+    }
 }

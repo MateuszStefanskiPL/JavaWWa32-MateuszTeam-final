@@ -42,4 +42,6 @@ public class Movie {
     @Column(name = "status")
     private MovieStatus movieStatus;
 
+
+
 }

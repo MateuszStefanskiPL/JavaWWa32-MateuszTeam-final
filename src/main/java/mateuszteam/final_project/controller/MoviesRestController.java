@@ -3,6 +3,7 @@ package mateuszteam.final_project.controller;
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.MovieDto;
 import mateuszteam.final_project.domain.dto.MovieTileDto;
+import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.service.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +42,12 @@ public class MoviesRestController {
     @GetMapping("/best")
     public List<MovieTileDto> displayMoviesWithHighestRating(){
         return moviesService.findMoviesWithHighestRating();
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/newmovie")
+    public Movie addNewMovie(@RequestBody MovieDto movieDto){
+       return moviesService.addMovie(movieDto);
     }
 
 

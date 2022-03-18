@@ -2,14 +2,10 @@ package mateuszteam.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.MovieCopyDto;
-import mateuszteam.final_project.domain.entities.MovieCopy;
 import mateuszteam.final_project.service.MoviesCopiesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,6 +29,12 @@ public class MoviesCopiesRestController {
     @PostMapping("/movie/{id}")
     MovieCopyDto addNewCopy(@PathVariable Long id) {
         return copiesService.create(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/remove/{id}")
+    public void removeCopyByCopyId(@PathVariable Long id){
+        copiesService.removeCopy(id);
     }
 
 

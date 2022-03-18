@@ -51,4 +51,7 @@ public class MoviesService {
                 .collect(Collectors.toList());
     }
 
+    public Movie addMovie(final MovieDto movieDto) {
+        return moviesRepository.save(movieMapper.mapFromDtoToDomain(movieDto));
+    }
 }

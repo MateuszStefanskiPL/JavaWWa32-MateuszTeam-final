@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.UserDto;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.security.UserSecuredRegistrationService;
-import mateuszteam.final_project.service.UsersRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class UsersRestController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
     public User registerNewUser(@RequestBody UserDto userDto){
-        return usersRegistrationService.register(userDto);
+        return usersRegistrationService.registerUser(userDto);
     }
 /*
     @ResponseStatus(HttpStatus.OK)

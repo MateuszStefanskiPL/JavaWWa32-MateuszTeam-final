@@ -6,12 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MoviesCopiesRepository extends JpaRepository<MovieCopy, Long> {
 
-    List<MovieCopy> findMovieCopiesByMovie_MovieId(Long id);
-    Movie findMovieByCopyId(Long id);
+    Optional<List<MovieCopy>> findMovieCopiesByMovie_MovieId(Long id);
+    Optional<Movie> findMovieByCopyId(Long id);
     List<MovieCopy> findAllByMovie_movieId(Long movieId);
-    MovieCopy findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(Long movieId);
+    Optional<MovieCopy> findOneByMovie_movieIdAndMoviesOrder_OrderIdIsNull(Long movieId);
 }

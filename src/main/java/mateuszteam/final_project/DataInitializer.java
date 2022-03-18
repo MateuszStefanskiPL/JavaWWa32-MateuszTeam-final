@@ -36,12 +36,32 @@ public class DataInitializer implements CommandLineRunner {
     }
 
     private void initializeAccessRules() {
-        var acr1 = new AccessRule(HttpMethod.POST, "/copies/movie/*", "copies:write");
 
-        accessRuleRepository.saveAll(Arrays.asList(acr1));
+        var acr1 = new AccessRule(HttpMethod.POST, "/copies/**", "copies:write");
+        var arc2 = new AccessRule(HttpMethod.POST, "/movies/**", "movies:write");
+        var arc7 = new AccessRule(HttpMethod.DELETE, "/movies/**", "movies:remove");
+        var arc8 = new AccessRule(HttpMethod.POST, "/movies/**", "movies:write");
+
+        var arc3 = new AccessRule(HttpMethod.PUT, "/addresses/**", "addresses:update");
+        var arc4 = new AccessRule(HttpMethod.POST, "/addresses/**", "addresses:write");
+        var arc5 = new AccessRule(HttpMethod.GET, "/addresses/**", "addresses:read");
+        var arc6 = new AccessRule(HttpMethod.DELETE, "/addresses/**", "addresses:remove");
+
+        var arc9 = new AccessRule(HttpMethod.POST, "/copies/**", "copies:write");
+        var arc10 = new AccessRule(HttpMethod.GET, "/copies/**", "copies:read");
+        var arc11 = new AccessRule(HttpMethod.DELETE, "/copies/**", "copies:remove");
+
+
+        accessRuleRepository.saveAll(Arrays.asList(acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8));
     }
 
     private void initializeData(){
+
+        var admin = User.builder()
+                .email("admin@email.com")
+                .password("admin")
+                .authorities(Arrays.asList("copies:write","movies:write"))
+                .build();
 
         var user1 = User.builder()
                 .email("user1@email.com")

@@ -25,14 +25,14 @@ public class UserDto {
 
     @NotEmpty
     @NotNull
-    @Size(min = 8, max = 1000)
+    @Size(min = 8, max = 1000, message = "Password should have from 8 to 1000 chars")
     private String password;
 
-    @NotNull
+
     @Digits(integer = 10, fraction = 2)
     private BigDecimal moneySpent;
 
-    @NotEmpty
+
     @NotNull
     private UserStatus userStatus;
 
