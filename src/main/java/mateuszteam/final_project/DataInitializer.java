@@ -68,14 +68,11 @@ public class DataInitializer implements CommandLineRunner {
         var arc21 = new AccessRule(HttpMethod.PATCH, "/users/**", "/users:update");
         var arc22 = new AccessRule(HttpMethod.DELETE, "/users/**", "/users:remove");
 
-
-
         accessRuleRepository.saveAll(Arrays.asList(
                 acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8,arc9,arc10,
                 arc11,arc12,arc13,arc14,arc15,arc16,arc17,arc18,arc19, arc20,
                 arc21,arc22));
     }
-
 
     private void initializeData(){
 
