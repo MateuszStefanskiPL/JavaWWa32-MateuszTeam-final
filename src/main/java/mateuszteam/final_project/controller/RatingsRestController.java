@@ -30,6 +30,18 @@ public class RatingsRestController {
         return ratingsService.getAllRatingsForSingleMovie(id);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/remove/{movieId}")
+    public void removeRatingsForMovie(@PathVariable Long movieId){
+        ratingsService.deleteRatingsForMovie(movieId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/remove/{ratingId}")
+    public void removeRatingsByRatingId(@PathVariable Long ratingId){
+        ratingsService.deleteRatingsById(ratingId);
+    }
+
 }
 
 

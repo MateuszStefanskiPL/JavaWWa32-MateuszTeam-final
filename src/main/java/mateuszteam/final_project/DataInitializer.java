@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -41,12 +43,10 @@ public class DataInitializer implements CommandLineRunner {
         var arc9 = new AccessRule(HttpMethod.GET, "/copies/**", "copies:read");
         var arc10 = new AccessRule(HttpMethod.DELETE, "/copies/**", "copies:remove");
 
-
         var arc3 = new AccessRule(HttpMethod.PUT, "/addresses/**", "addresses:update");
         var arc4 = new AccessRule(HttpMethod.POST, "/addresses/**", "addresses:write");
         var arc5 = new AccessRule(HttpMethod.GET, "/addresses/**", "addresses:read");
         var arc6 = new AccessRule(HttpMethod.DELETE, "/addresses/**", "addresses:remove");
-
 
         var arc2 = new AccessRule(HttpMethod.POST, "/movies/**", "movies:write");
         var arc7 = new AccessRule(HttpMethod.DELETE, "/movies/**", "movies:remove");
@@ -55,24 +55,41 @@ public class DataInitializer implements CommandLineRunner {
         var arc11 = new AccessRule(HttpMethod.GET, "/orders/**", "orders:read");
         var arc12 = new AccessRule(HttpMethod.POST, "/orders/**", "orders:write");
         var arc13 = new AccessRule(HttpMethod.PUT, "/orders/**", "orders:update");
-        var arc14 = new AccessRule(HttpMethod.DELETE, "/orders/**", "orders:remove");
+        var arc14 = new AccessRule(HttpMethod.PATCH, "/orders/**", "orders:update");
+        var arc15 = new AccessRule(HttpMethod.DELETE, "/orders/**", "orders:remove");
+
+        var arc16 = new AccessRule(HttpMethod.GET, "/ratings/**", "ratings:read");
+        var arc17 = new AccessRule(HttpMethod.DELETE, "/ratings/**", "ratings:remove");
+
+        var arc18 = new AccessRule(HttpMethod.DELETE, "/cart/**", "/cart:read");
+
+        var arc19 = new AccessRule(HttpMethod.GET, "/users/**", "/users:read");
+        var arc20 = new AccessRule(HttpMethod.POST, "/users/**", "/users:write");
+        var arc21 = new AccessRule(HttpMethod.PATCH, "/users/**", "/users:update");
+        var arc22 = new AccessRule(HttpMethod.DELETE, "/users/**", "/users:remove");
 
 
-        accessRuleRepository.saveAll(Arrays.asList(acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8,arc9,arc10,arc11,arc12,arc13,arc14));
+
+        accessRuleRepository.saveAll(Arrays.asList(
+                acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8,arc9,arc10,
+                arc11,arc12,arc13,arc14,arc15,arc16,arc17,arc18,arc19, arc20,
+                arc21,arc22));
     }
+
 
     private void initializeData(){
 
         var admin = User.builder()
                 .email("admin@email.com")
                 .password("admin")
-                .authorities(Arrays.asList("copies:write","movies:write"))
+                .authorities(adminRules())
                 .build();
 
         var user1 = User.builder()
                 .email("user1@email.com")
                 .password("password1")
                 .moneySpent(BigDecimal.valueOf(1050.0D))
+                .authorities(userRules())
                 .userStatus(UserStatus.SILVER)
                 .build();
 
@@ -80,6 +97,7 @@ public class DataInitializer implements CommandLineRunner {
                 .email("user2@email.com")
                 .password("password2")
                 .moneySpent(BigDecimal.valueOf(6000.0D))
+                .authorities(userRules())
                 .userStatus(UserStatus.GOLD)
                 .build();
 
@@ -87,6 +105,7 @@ public class DataInitializer implements CommandLineRunner {
                 .email("user3@email.com")
                 .password("password3")
                 .moneySpent(BigDecimal.valueOf(16000.0D))
+                .authorities(userRules())
                 .userStatus(UserStatus.PLATINUM)
                 .build();
         var address1  = Address.builder()
@@ -195,6 +214,14 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         copiesRepository.saveAll(Arrays.asList(copy1, copy2, copy3, copy4, copy5, copy6));
+    }
+
+    private List<String> adminRules(){
+        return accessRuleRepository.findAll().stream().map(AccessRule::getAuthority).collect(Collectors.toList());
+    }
+
+    private List<String> userRules(){
+        return accessRuleRepository.findAll().stream().map(AccessRule::getAuthority).collect(Collectors.toList());
     }
 
 

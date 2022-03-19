@@ -31,7 +31,7 @@ public class OrdersService {
     private final OrderPriceCalculator priceCalculator;
     private final ApplicationEventPublisher eventPublisher;
 
-    public MoviesOrderDto getOrderById(Long orderId) {
+    public MoviesOrderDto showOrderByOrderId(Long orderId) {
         if (ordersRepository.findById(orderId).isEmpty()){
             throw new ResourceNotFoundException(orderId);
         }
@@ -47,11 +47,6 @@ public class OrdersService {
                 .map(o -> ordersMapper.mapFromDomainToDto(o))
                 .collect(Collectors.toList());
     }
-
-  //  public MoviesOrder addNewOrder(MoviesOrderDto moviesOrderDto){
-//        var order = ordersMapper.mapFromDtoToDomain(moviesOrderDto);
-//        return order;
-//    }
 
     public List<MoviesOrderDto> findAllOrdersByStatus(final OrderStatus status) {
         if (ordersRepository.findByOrderStatus(status).isEmpty()){
@@ -71,10 +66,11 @@ public class OrdersService {
         cartToOrder.setUser(user);
         cartToOrder.setPricePerDay(priceCalculator.calculateOrderPricePerDay(cartToOrder));
         cartToOrder = ordersRepository.save(cartToOrder);   //chcemy aby w zwrotce bylo ustawione orderId do odwolania sie
-        setOrderForCopies(cartToOrder);
+        setOrderNumForCopies(cartToOrder);
         return ordersMapper.mapFromDomainToDto(ordersRepository.save(cartToOrder));
     }
 
+    //todo--question-- czy ta metoda jest nadal potrzebna?
     private User getByEmail(String userEmail) {
         var user = usersRepository.findByEmail(userEmail);  //pozniej via Spring Security
         if(user.isEmpty()) {
@@ -83,7 +79,7 @@ public class OrdersService {
         return user.get();
     }
 
-    private void setOrderForCopies(MoviesOrder order) {
+    private void setOrderNumForCopies(MoviesOrder order) {
         for(var copy : order.getMovieCopies()) {
             copy.setMoviesOrder(order);
         }
@@ -92,7 +88,7 @@ public class OrdersService {
     //tutaj dostajemy sie poprzez PATCH orders/{id}/accept
     // zdarzenie (event) OrderPlaced powoduje wyslanie maila o zlozonym zamowieniu
     public MoviesOrderDto acceptOrder(Long orderId) {
-        var order = getForId(orderId);
+        var order = getOrderById(orderId);
         order.setOrderStatus(OrderStatus.ACCEPTED);
         order.setOrderPlacedDate(LocalDateTime.now());
         order = ordersRepository.save(order);
@@ -100,7 +96,7 @@ public class OrdersService {
         return ordersMapper.mapFromDomainToDto(order);
     }
 
-    private MoviesOrder getForId(Long orderId) {
+    private MoviesOrder getOrderById(Long orderId) {
         var orderOptional = ordersRepository.findById(orderId);
         if(orderOptional.isEmpty()) {
             throw new ResourceNotFoundException(orderId);
@@ -119,5 +115,10 @@ public class OrdersService {
                 .collect(Collectors.toList());
 
         ordersRepository.deleteAllByIdInBatch(ordersToRemove);
+    }
+
+    public void deleteOrderByOrderId(final Long orderId) {
+        var order = getOrderById(orderId);
+        ordersRepository.deleteById(order.getOrderId());
     }
 }

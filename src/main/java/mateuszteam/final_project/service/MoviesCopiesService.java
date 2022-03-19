@@ -66,7 +66,7 @@ public class MoviesCopiesService {
         return copy.get();
     }
 
-    //todo--question-- czy to jest problem ?? The call to 'getOrderById' always fails, according to its method contracts 73 line
+    //todo--question-- czy to jest problem ?? The call to 'showOrderByOrderId' always fails, according to its method contracts 73 line
     List<MovieCopy> returnAvailableCopiesForMovie(Long movieId){
         var copiesOptional = copiesRepository.findMovieCopiesByMovie_MovieId(movieId);
         if (copiesOptional.isEmpty()) {
