@@ -17,7 +17,6 @@ public class UsersRestController {
     private final UserSecuredRegistrationService usersRegistrationService;
     private final UsersService usersService;
 
-
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/register")
     public User registerNewUser(@RequestBody UserDto userDto){
@@ -47,5 +46,7 @@ public class UsersRestController {
     public void removeUserById(@PathVariable Long userId){
         usersService.deleteUserById(userId);
     }
+
+
 
 }

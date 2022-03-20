@@ -2,10 +2,8 @@ package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mateuszteam.final_project.domain.dto.MovieDto;
 import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieStatus;
-import mateuszteam.final_project.mapper.MoviesMapStructMapper;
 import mateuszteam.final_project.repository.MoviesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor(onConstructor_={@Autowired})
@@ -25,7 +22,7 @@ public class MoviesStatusChangerService {
     private static final LocalDate NEWEST_DATE = LocalDate.now().minusMonths(3);
     private static final LocalDate STANDARD_DATE = LocalDate.now().minusYears(1);
 
-    private final MoviesRepository moviesRepository;
+    private MoviesRepository moviesRepository;
 
     @Scheduled(cron = "@daily")
     public void saveUpdatedMovies(){
@@ -43,7 +40,7 @@ public class MoviesStatusChangerService {
         return movies;
     }
 
-    private Movie updateMovieStatus(Movie movie){
+    Movie updateMovieStatus(Movie movie){
         if(movie.getReleaseDate().isAfter(PREMIER_DATE)) {
             changeStatus(movie,MovieStatus.PREMIERE);
         }

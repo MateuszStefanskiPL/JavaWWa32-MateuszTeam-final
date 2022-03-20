@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieCopy;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.exceptions.CopiesNotFoundException;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -89,17 +87,26 @@ public class SessionCartService {
     //todo test it, bo logika operacji na danych jest po stronie JVM a nie bazy danych
     //albo refactor, wyniesc to 'na gore', albo Mockito.mock(copiesRepository) + when(copiesRepositoryMock.findAllByMovie...).thenReturn(movie)
     private CopySearchResult getFreeCopyForMovieId(Long movieId) {
-        var freeCopy = getAllCopiesByMovieId(movieId).stream()
-                .filter(c -> c.getMoviesOrder() == null)
-                .findFirst();
+        var freeCopy = returnCopyIfAvailableByMovieId(movieId);
         if (freeCopy.isEmpty()){
             return new CopySearchResult(movieId, null);
         }
         return new CopySearchResult(movieId, freeCopy.get());
     }
 
+    private Optional<MovieCopy> returnCopyIfAvailableByMovieId(Long movieId){
+        var copies = getAllCopiesByMovieId(movieId);
+        return copies.stream()
+                .filter(c -> c.getMoviesOrder() == null)
+                .findFirst();
+    }
+
     private List<MovieCopy> getAllCopiesByMovieId(Long movieId){
-       return copiesRepository.findAllByMovie_movieId(movieId);
+        var copies = copiesRepository.findAllByMovie_movieId(movieId);
+        if (copies.isEmpty()){
+            throw new CopiesNotFoundException(movieId);
+        }
+       return copies;
     }
 
     //klasa reprezentuje wynik poszukiwania wolnej kopii dla danego filmu

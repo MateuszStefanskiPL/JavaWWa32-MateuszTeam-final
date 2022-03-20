@@ -10,8 +10,12 @@ public class CopiesNotFoundException extends RuntimeException {
     private List<Long> moviesWithoutFreeCopies;
 
     public CopiesNotFoundException(List<Long> moviesWithoutFreeCopies) {
-        super("Brak wolnych kopii dla tych filmow: " + moviesWithoutFreeCopies);
+        super("No free copies for this movie : " + moviesWithoutFreeCopies);
         this.moviesWithoutFreeCopies = moviesWithoutFreeCopies;
+    }
+
+    public CopiesNotFoundException(Long id) {
+        super("No free copies for this movie : " + id);
     }
 
 
