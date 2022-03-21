@@ -32,11 +32,11 @@ public class OrderPriceCalculator {
         var userStatus = order.getUser().getUserStatus();
         var movieStatus = order.getMovieCopies().stream().findFirst().get().getMovie().getMovieStatus();
         var pricePerDay = calculatePricePerDay(movieStatus, userStatus);
-
+        order.setPricePerDay(pricePerDay);
         return pricePerDay;
     }
 
-    private BigDecimal calculatePricePerDay(MovieStatus movieStatus, UserStatus userStatus) {
+    BigDecimal calculatePricePerDay(MovieStatus movieStatus, UserStatus userStatus) {
         var pricePerDayFactorForUserStatus = calcOrderPricePerDayFactor(userStatus);
         var pricePerDayFactorForMovieStatus = calcOrderPricePerDayFactor(movieStatus);
 
@@ -49,7 +49,7 @@ public class OrderPriceCalculator {
     private BigDecimal calcOrderPricePerDayFactor(UserStatus userStatus) {
         switch (userStatus) {
             case SILVER:
-                return BigDecimal.ONE;
+                return SILVER_USER_DISCOUNT;
             case GOLD:
                 return GOLD_USER_DISCOUNT;
             case PLATINUM:

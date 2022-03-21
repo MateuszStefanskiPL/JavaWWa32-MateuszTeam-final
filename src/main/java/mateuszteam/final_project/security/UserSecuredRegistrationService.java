@@ -23,9 +23,9 @@ public class UserSecuredRegistrationService {
 
     public User registerUser(UserDto userDto) {
 
-        if (isUserInDatabase(userDto.getEmail())){
-            loginService.loadUserByUsername(userDto.getEmail());
-        }
+//        if (isUserInDatabase(userDto.getEmail())){
+//            loginService.loadUserByUsername(userDto.getEmail());
+//        }
 
         var user = usersMapper.mapFromDtoToDomain(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
