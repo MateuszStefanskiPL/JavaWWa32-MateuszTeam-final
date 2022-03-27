@@ -85,8 +85,6 @@ public class OrdersService {
         }
     }
 
-    //tutaj dostajemy sie poprzez PATCH orders/{id}/accept
-    // zdarzenie (event) OrderPlaced powoduje wyslanie maila o zlozonym zamowieniu
     public MoviesOrderDto acceptOrder(Long orderId) {
         var order = getOrderById(orderId);
         order.setOrderStatus(OrderStatus.ACCEPTED);
@@ -104,8 +102,8 @@ public class OrdersService {
         return orderOptional.get();
     }
 
-    //usuwanie zamowien ktore nie zostaly zaakceptowane - raz na dobe
-    //todo test it jako test integracyjny LUB
+    //todo--question-- mieliśmy to testować jak poniżej ale nie pykło ale udało mi sie zrobić spring boot test
+    //test it jako test integracyjny LUB
     //@DataJpaTest + new OrdersService(final OrdersRepository ordersRepostitory, null, null...) - sprawdzic
     @Scheduled(cron = "@daily")
     void removeNotAcceptedOrders() {

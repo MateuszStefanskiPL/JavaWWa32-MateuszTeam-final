@@ -14,6 +14,7 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<MoviesOrder, Long> {
 
     Page<MoviesOrder> findByUser_userId(Long id , Pageable pageable);
+    List<MoviesOrder> findByUser_Email(String email);
 
     List<MoviesOrder> findByOrderStatus(OrderStatus status);
 

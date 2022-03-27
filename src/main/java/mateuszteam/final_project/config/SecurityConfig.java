@@ -27,7 +27,9 @@ class SecurityConfig {
                 .userDetailsService(userRepositoryBackedUserDetailsService)
                 .authorizeHttpRequests((authz) -> authz.anyRequest().access(access))
                 .httpBasic(Customizer.withDefaults())
-                .csrf().disable();
+                .authorizeRequests().antMatchers("/h2-console/**").permitAll()
+                .and().csrf().ignoringAntMatchers("/h2-console/**")
+                .and().headers().frameOptions().sameOrigin();
 
         return http.build();
     }

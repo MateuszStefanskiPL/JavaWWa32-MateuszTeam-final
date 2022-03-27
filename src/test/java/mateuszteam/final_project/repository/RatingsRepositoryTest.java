@@ -33,6 +33,16 @@ public class RatingsRepositoryTest {
         Assertions.assertThat(ratings.get(4).getScore()).isEqualTo(1.0);
     }
 
+    @Test
+    void should_return_size_of_ratings_list(){
+        //given
+        List<Rating> ratings = ratingsRepository.findRatingsByMovie_MovieId(1L);
+        //when
+        int size = ratings.size();
+        //then
+        Assertions.assertThat(size).isEqualTo(3);
+    }
+
     List<Rating> testRatings() {
         var movie = new Movie();
         movie.setTitle("Ogniem i mieczem");

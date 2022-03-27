@@ -2,10 +2,7 @@ package mateuszteam.final_project;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.entities.*;
-import mateuszteam.final_project.repository.AccessRuleRepository;
-import mateuszteam.final_project.repository.MoviesCopiesRepository;
-import mateuszteam.final_project.repository.MoviesRepository;
-import mateuszteam.final_project.repository.UsersRepository;
+import mateuszteam.final_project.repository.*;
 import mateuszteam.final_project.security.AccessRule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -28,12 +25,13 @@ public class DataInitializer implements CommandLineRunner {
     private final UsersRepository usersRepository;
     private final MoviesRepository moviesRepository;
     private final MoviesCopiesRepository copiesRepository;
+    private final RatingsRepository ratingsRepository;
     private final AccessRuleRepository accessRuleRepository;
 
     @Override
     public void run(final String... args) throws Exception {
         initializeData();
-        //initializeCopies();
+       // initializeCopies();
         initializeAccessRules();
     }
 
@@ -129,7 +127,7 @@ public class DataInitializer implements CommandLineRunner {
                 .user(user3)
                 .build();
 
-        usersRepository.saveAll(Arrays.asList(user1,user2,user3));
+        usersRepository.saveAll(Arrays.asList(admin,user1,user2,user3));
 
         var movie1 = Movie.builder()
                 .title("A Nightmare on Elm Street")
@@ -164,7 +162,7 @@ public class DataInitializer implements CommandLineRunner {
                 .averageScore(0.0D)
                 .build();
 
-        moviesRepository.saveAll(Arrays.asList(movie1,movie2,movie3));
+
 
         var rating1 = Rating.builder()
                 .text("I like it")
@@ -176,11 +174,22 @@ public class DataInitializer implements CommandLineRunner {
 
         var rating2 = Rating.builder()
                 .text("I like it")
-                .movie(movie1)
+                .movie(movie2)
                 .user(user2)
                 .score(10.0D)
                 .dateOfEvaluation(LocalDateTime.now().minusDays(2))
                 .build();
+
+        var rating3 = Rating.builder()
+                .text("Nice")
+                .movie(movie3)
+                .user(user3)
+                .score(10.0D)
+                .dateOfEvaluation(LocalDateTime.now().minusDays(10))
+                .build();
+        //moviesRepository.saveAll(Arrays.asList(movie1,movie2,movie3));
+        ratingsRepository.saveAll(Arrays.asList(rating1,rating2,rating3));
+
 
     }
 
@@ -209,6 +218,8 @@ public class DataInitializer implements CommandLineRunner {
         var copy6 = MovieCopy.builder()
                 .movie(movie3)
                 .build();
+
+
 
         copiesRepository.saveAll(Arrays.asList(copy1, copy2, copy3, copy4, copy5, copy6));
     }
