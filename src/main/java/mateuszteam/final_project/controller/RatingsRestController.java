@@ -5,7 +5,6 @@ import mateuszteam.final_project.domain.dto.RatingDto;
 import mateuszteam.final_project.domain.entities.Rating;
 import mateuszteam.final_project.service.RatingsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +27,12 @@ public class RatingsRestController {
     @GetMapping("/all/{id}")
     public List<RatingDto> displayAllRatingsForSingleMovieById(@PathVariable Long id){
         return ratingsService.getAllRatingsForSingleMovie(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/add")
+    public Rating addNewRatingForMovie(@RequestBody RatingDto ratingDto){
+        return ratingsService.addNewRating(ratingDto);
     }
 
     @ResponseStatus(HttpStatus.OK)

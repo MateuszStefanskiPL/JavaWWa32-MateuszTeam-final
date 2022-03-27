@@ -56,4 +56,8 @@ public class RatingsService {
         }
         ratingsRepository.delete(rating.get());
     }
+
+    public Rating addNewRating(final RatingDto ratingDto) {
+        return ratingsRepository.save(ratingMapper.mapFromDtoToDomain(ratingDto));
+    }
 }

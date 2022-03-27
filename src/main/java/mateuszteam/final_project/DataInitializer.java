@@ -23,6 +23,7 @@ public class DataInitializer implements CommandLineRunner {
 
 
     private final UsersRepository usersRepository;
+    private final AddressRepository addressRepository;
     private final MoviesRepository moviesRepository;
     private final MoviesCopiesRepository copiesRepository;
     private final RatingsRepository ratingsRepository;
@@ -31,7 +32,6 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(final String... args) throws Exception {
         initializeData();
-       // initializeCopies();
         initializeAccessRules();
     }
 
@@ -58,18 +58,19 @@ public class DataInitializer implements CommandLineRunner {
 
         var arc16 = new AccessRule(HttpMethod.GET, "/ratings/**", "ratings:read");
         var arc17 = new AccessRule(HttpMethod.DELETE, "/ratings/**", "ratings:remove");
+        var arc23 = new AccessRule(HttpMethod.POST, "/ratings/**", "ratings:write");
 
-        var arc18 = new AccessRule(HttpMethod.DELETE, "/cart/**", "/cart:read");
+        var arc18 = new AccessRule(HttpMethod.DELETE, "/cart/**", "cart:read");
 
-        var arc19 = new AccessRule(HttpMethod.GET, "/users/**", "/users:read");
-        var arc20 = new AccessRule(HttpMethod.POST, "/users/**", "/users:write");
-        var arc21 = new AccessRule(HttpMethod.PATCH, "/users/**", "/users:update");
-        var arc22 = new AccessRule(HttpMethod.DELETE, "/users/**", "/users:remove");
+        var arc19 = new AccessRule(HttpMethod.GET, "/users/**", "users:read");
+        var arc20 = new AccessRule(HttpMethod.POST, "/users/**", "users:write");
+        var arc21 = new AccessRule(HttpMethod.PATCH, "/users/**", "users:update");
+        var arc22 = new AccessRule(HttpMethod.DELETE, "/users/**", "users:remove");
 
         accessRuleRepository.saveAll(Arrays.asList(
                 acr1,arc2,arc3,arc4,arc5,arc6,arc7,arc8,arc9,arc10,
                 arc11,arc12,arc13,arc14,arc15,arc16,arc17,arc18,arc19, arc20,
-                arc21,arc22));
+                arc21,arc22,arc23));
     }
 
     private void initializeData(){
@@ -127,7 +128,8 @@ public class DataInitializer implements CommandLineRunner {
                 .user(user3)
                 .build();
 
-        usersRepository.saveAll(Arrays.asList(admin,user1,user2,user3));
+        usersRepository.save(admin);
+        addressRepository.saveAll(Arrays.asList(address1,address2,address3));
 
         var movie1 = Movie.builder()
                 .title("A Nightmare on Elm Street")
@@ -162,6 +164,29 @@ public class DataInitializer implements CommandLineRunner {
                 .averageScore(0.0D)
                 .build();
 
+        var copy1 = MovieCopy.builder()
+                .movie(movie1)
+                .build();
+        var copy2 = MovieCopy.builder()
+                .movie(movie1)
+                .build();
+
+
+        var copy3 = MovieCopy.builder()
+                .movie(movie2)
+                .build();
+        var copy4 = MovieCopy.builder()
+                .movie(movie2)
+                .build();
+
+
+        var copy5 = MovieCopy.builder()
+                .movie(movie3)
+                .build();
+        var copy6 = MovieCopy.builder()
+                .movie(movie3)
+                .build();
+
 
 
         var rating1 = Rating.builder()
@@ -187,49 +212,29 @@ public class DataInitializer implements CommandLineRunner {
                 .score(10.0D)
                 .dateOfEvaluation(LocalDateTime.now().minusDays(10))
                 .build();
+        copiesRepository.saveAll(Arrays.asList(copy1,copy2,copy3,copy4,copy5,copy6));
         //moviesRepository.saveAll(Arrays.asList(movie1,movie2,movie3));
-        ratingsRepository.saveAll(Arrays.asList(rating1,rating2,rating3));
-
+        //ratingsRepository.saveAll(Arrays.asList(rating1,rating2,rating3));
+        //todo--question-- dlaczego to nie działa
 
     }
 
-    private void initializeCopies() {
-        //przy zapisie copies mamy 'failed to persist detached entity movie'
-        var movie1 = moviesRepository.findById(1L).get();
-        var copy1 = MovieCopy.builder()
-                .movie(movie1)
-                .build();
-        var copy2 = MovieCopy.builder()
-                .movie(movie1)
-                .build();
 
-        var movie2 = moviesRepository.findById(2L).get();
-        var copy3 = MovieCopy.builder()
-                .movie(movie2)
-                .build();
-        var copy4 = MovieCopy.builder()
-                .movie(movie2)
-                .build();
-
-        var movie3 = moviesRepository.findById(3L).get();
-        var copy5 = MovieCopy.builder()
-                .movie(movie3)
-                .build();
-        var copy6 = MovieCopy.builder()
-                .movie(movie3)
-                .build();
-
-
-
-        copiesRepository.saveAll(Arrays.asList(copy1, copy2, copy3, copy4, copy5, copy6));
-    }
 
     private List<String> adminRules(){
         return accessRuleRepository.findAll().stream().map(AccessRule::getAuthority).collect(Collectors.toList());
     }
 
     private List<String> userRules(){
-        return accessRuleRepository.findAll().stream().map(AccessRule::getAuthority).collect(Collectors.toList());
+        var rules = accessRuleRepository.findAll().stream().map(AccessRule::getAuthority).collect(Collectors.toList());
+        rules.removeIf(rule -> rule.equals("copies:write"));
+        rules.removeIf(rule -> rule.equals("copies:remove"));
+        rules.removeIf(rule -> rule.equals("movies:write"));
+        rules.removeIf(rule -> rule.equals("movies:remove"));
+        rules.removeIf(rule -> rule.equals("ratings:remove"));
+        rules.removeIf(rule -> rule.equals("users:remove"));
+        return rules;
+
     }
 
 
