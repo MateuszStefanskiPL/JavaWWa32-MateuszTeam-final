@@ -34,7 +34,6 @@ public class MoviesStatusChangerService {
         return updateMoviesStatus(moviesRepository.findAll());
     }
 
-    //todo: test it -> zasilic lista 4 filmow i sprawdzic czy na wyjsciu zmienily sie statusy
     List<Movie> updateMoviesStatus(List<Movie> movies) {
         movies.forEach(this::updateMovieStatus);
         return movies;
