@@ -7,6 +7,9 @@ import mateuszteam.final_project.domain.entities.UserStatus;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component

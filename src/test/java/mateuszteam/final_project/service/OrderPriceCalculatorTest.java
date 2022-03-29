@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 class OrderPriceCalculatorTest {
 
@@ -33,7 +34,7 @@ class OrderPriceCalculatorTest {
                 .build();
 
         var userStatus = user1.getUserStatus();
-        var movieStatus = movie1.getMovieStatus();
+        var movieStatus = Arrays.asList(movie1.getMovieStatus());
 
         //when
 
