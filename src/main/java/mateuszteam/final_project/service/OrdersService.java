@@ -10,7 +10,6 @@ import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.mapper.OrdersMapStructMapper;
 import mateuszteam.final_project.repository.OrdersRepository;
 import mateuszteam.final_project.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor
 @Service
 public class OrdersService {
 
@@ -44,7 +43,7 @@ public class OrdersService {
         }
         return ordersRepository.findByUser_userId(userId, PageRequest.of(3,6))
                 .stream()
-                .map(o -> ordersMapper.mapFromDomainToDto(o))
+                .map(ordersMapper::mapFromDomainToDto)
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +53,7 @@ public class OrdersService {
         }
         List<MoviesOrder> orders = ordersRepository.findByOrderStatus(status);
         return orders.stream()
-                .map(o -> ordersMapper.mapFromDomainToDto(o))
+                .map(ordersMapper::mapFromDomainToDto)
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +66,7 @@ public class OrdersService {
         cartToOrder.setPricePerDay(priceCalculator.calculateOrderPricePerDay(cartToOrder));
         cartToOrder = ordersRepository.save(cartToOrder);   //chcemy aby w zwrotce bylo ustawione orderId do odwolania sie
         setOrderNumForCopies(cartToOrder);
-        return ordersMapper.mapFromDomainToDto(ordersRepository.save(cartToOrder));
+        return ordersMapper.mapFromDomainToDto(saveOrder(cartToOrder));
     }
 
     //todo--question-- czy ta metoda jest nadal potrzebna?
@@ -89,22 +88,10 @@ public class OrdersService {
         var order = getOrderById(orderId);
         order.setOrderStatus(OrderStatus.ACCEPTED);
         order.setOrderPlacedDate(LocalDateTime.now());
-        order = ordersRepository.save(order);
         eventPublisher.publishEvent(OrderPlacedEvent.from(order));
-        return ordersMapper.mapFromDomainToDto(order);
+        return ordersMapper.mapFromDomainToDto(saveOrder(order));
     }
 
-    private MoviesOrder getOrderById(Long orderId) {
-        var orderOptional = ordersRepository.findById(orderId);
-        if(orderOptional.isEmpty()) {
-            throw new ResourceNotFoundException(orderId);
-        }
-        return orderOptional.get();
-    }
-
-    //todo--question-- mieliśmy to testować jak poniżej ale nie pykło ale udało mi sie zrobić spring boot test
-    //test it jako test integracyjny LUB
-    //@DataJpaTest + new OrdersService(final OrdersRepository ordersRepostitory, null, null...) - sprawdzic
     @Scheduled(cron = "@daily")
     void removeNotAcceptedOrders() {
         var ordersToRemove = ordersRepository.findAll().stream()
@@ -119,4 +106,27 @@ public class OrdersService {
         var order = getOrderById(orderId);
         ordersRepository.deleteById(order.getOrderId());
     }
+
+    public MoviesOrder turnBackOrder(Long orderId){
+        var order = getOrderById(orderId);
+        order.setOrderStatus(OrderStatus.WAY_BACK);
+        order.setTotalPrice(priceCalculator.calculateTotalOrderPrice(order));
+        eventPublisher.publishEvent(order);
+        return saveOrder(order);
+    }
+
+    private MoviesOrder getOrderById(Long orderId) {
+        var orderOptional = ordersRepository.findById(orderId);
+        if(orderOptional.isEmpty()) {
+            throw new ResourceNotFoundException(orderId);
+        }
+        return orderOptional.get();
+    }
+
+    private MoviesOrder saveOrder(MoviesOrder order){
+        return ordersRepository.save(order);
+    }
+
+
+
 }

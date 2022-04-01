@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@RequiredArgsConstructor
 @Service
 public class MoviesCopiesService {
 
-    private MoviesCopiesRepository copiesRepository;
-    private MoviesCopiesMapStructMapper copiesMapper;
-    private MoviesRepository moviesRepository;
+    private final MoviesCopiesRepository copiesRepository;
+    private final MoviesCopiesMapStructMapper copiesMapper;
+    private final MoviesRepository moviesRepository;
 
     public List<MovieCopyDto> findAllCopiesForSingleMovie(final Long movieId) {
         var copies = returnAvailableCopiesForMovie(movieId);
@@ -36,8 +36,7 @@ public class MoviesCopiesService {
                 .movie(moviesRepository.findById(movieId).get())
                 .build();
 
-        copy = copiesRepository.save(copy);
-        return copiesMapper.mapFromDomainToDto(copy);
+        return copiesMapper.mapFromDomainToDto(saveCopy(copy));
     }
 
     public MovieCopyDto get(Long copyId) {
@@ -66,14 +65,15 @@ public class MoviesCopiesService {
         return copy.get();
     }
 
-    //todo--question-- czy to jest problem ?? The call to 'showOrderByOrderId' always fails, according to its method contracts 73 line
     List<MovieCopy> returnAvailableCopiesForMovie(Long movieId){
         var copiesOptional = copiesRepository.findMovieCopiesByMovie_MovieId(movieId);
         if (copiesOptional.isEmpty()) {
-            var copies = copiesOptional.get();
-            var ids = getIdsFromCopiesList(copies);
-            throw new CopiesNotFoundException(ids);
+            throw new CopiesNotFoundException(movieId);
         }
         return copiesOptional.get();
+    }
+
+    private MovieCopy saveCopy(MovieCopy copy){
+        return copiesRepository.save(copy);
     }
 }

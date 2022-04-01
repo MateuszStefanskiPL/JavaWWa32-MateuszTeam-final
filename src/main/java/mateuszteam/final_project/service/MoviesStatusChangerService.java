@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor
 @Service
 public class MoviesStatusChangerService {
 
@@ -22,7 +22,7 @@ public class MoviesStatusChangerService {
     private static final LocalDate NEWEST_DATE = LocalDate.now().minusMonths(3);
     private static final LocalDate STANDARD_DATE = LocalDate.now().minusYears(1);
 
-    private MoviesRepository moviesRepository;
+    private final MoviesRepository moviesRepository;
 
     @Scheduled(cron = "@daily")
     public void saveUpdatedMovies(){

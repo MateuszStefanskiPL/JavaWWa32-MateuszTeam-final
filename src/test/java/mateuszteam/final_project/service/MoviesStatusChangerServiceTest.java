@@ -12,7 +12,7 @@ import java.util.List;
 
 class MoviesStatusChangerServiceTest {
 
-    private MoviesStatusChangerService moviesStatusChangerService = new MoviesStatusChangerService();
+    private MoviesStatusChangerService moviesStatusChangerService = new MoviesStatusChangerService(null);
 
     @Test
     void should_change_movie_status(){

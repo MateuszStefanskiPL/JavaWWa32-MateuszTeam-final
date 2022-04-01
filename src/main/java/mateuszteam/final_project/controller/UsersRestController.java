@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor
 public class UsersRestController {
 
     private final UserSecuredRegistrationService usersRegistrationService;

@@ -2,9 +2,9 @@ package mateuszteam.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.MoviesOrderDto;
+import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.OrderStatus;
 import mateuszteam.final_project.service.OrdersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +52,9 @@ public class OrdersRestController {
         ordersService.deleteOrderByOrderId(orderId);
     }
 
-
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{orderId}/turnback")
+    public MoviesOrder turnBackOrder(@PathVariable Long orderId){
+        return ordersService.turnBackOrder(orderId);
+    }
 }

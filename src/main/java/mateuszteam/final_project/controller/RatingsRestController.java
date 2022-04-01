@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ratings")
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor
 public class RatingsRestController {
 
     private final RatingsService ratingsService;

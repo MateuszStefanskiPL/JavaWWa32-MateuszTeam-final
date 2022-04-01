@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import mateuszteam.final_project.domain.entities.MovieStatus;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.UserStatus;
+import mateuszteam.final_project.domain.events.OrderReturnedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -40,7 +42,7 @@ public class OrderPriceCalculator {
         return pricePerDay;
     }
 
-    BigDecimal calculatePricePerDay(MovieStatus movieStatus, UserStatus userStatus) {
+    BigDecimal calculatePricePerDay(List<MovieStatus> movieStatus, UserStatus userStatus) {
         var pricePerDayFactorForUserStatus = calcOrderPricePerDayFactor(userStatus);
         var pricePerDayFactorForMovieStatus = calcOrderPricePerDayFactor(movieStatus);
 
@@ -78,8 +80,4 @@ public class OrderPriceCalculator {
         }
     }
 
-
 }
-//todo jak zorganizować obliczanie czasu oddania skoro
-// tylko zmieniamy status i nie ma jak pobrać daty oddania jedynie może eventem przy kazdej
-// zmianie statusu aktualizować cene

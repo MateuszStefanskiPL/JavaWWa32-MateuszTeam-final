@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor
 @Service
 public class MoviesService {
 
