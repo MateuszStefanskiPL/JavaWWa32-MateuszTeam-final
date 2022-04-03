@@ -19,7 +19,6 @@ public class UserSecuredRegistrationService {
     private final UsersMapStructMapper usersMapper;
     private final PasswordEncoder passwordEncoder;
     private final UsersRepository usersRepository;
-    private final UserRepositoryBackedUserDetailsService loginService;
 
     public User registerUser(UserDto userDto) {
 
@@ -27,6 +26,7 @@ public class UserSecuredRegistrationService {
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUserStatus(UserStatus.NEW_USER);
         user.getAuthoritiesList().addAll(userAuthorities());
+
         return usersRepository.save(user);
     }
 
@@ -36,8 +36,5 @@ public class UserSecuredRegistrationService {
                 "ratings:read","/cart:read","/users:read","/users:update","/users:write","/users:remove");
     }
 
-    private boolean isUserInDatabase(String email){
-        return usersRepository.findByEmail(email).isPresent();
-    }
 
 }

@@ -4,6 +4,7 @@ import lombok.*;
 import mateuszteam.final_project.domain.entities.Genre;
 import mateuszteam.final_project.domain.entities.MovieStatus;
 
+import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;

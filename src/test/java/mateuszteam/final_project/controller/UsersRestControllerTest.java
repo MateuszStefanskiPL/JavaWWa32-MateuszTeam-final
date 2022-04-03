@@ -14,7 +14,6 @@ class UsersRestControllerTest {
     void should_register_new_user() {
      post("http://localhost:8082/users/register")
              .then()
-             .statusCode(201)
-             .body("email");
+             .statusCode(201);
     }
 }

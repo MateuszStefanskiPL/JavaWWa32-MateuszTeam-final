@@ -8,7 +8,6 @@ import mateuszteam.final_project.domain.entities.MovieStatus;
 import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.mapper.MoviesMapStructMapper;
 import mateuszteam.final_project.repository.MoviesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,6 +23,7 @@ public class MoviesService {
 
     private final MoviesRepository moviesRepository;
     private final MoviesMapStructMapper movieMapper;
+    private final MoviesStatusChangerService statusChangerService;
 
     public List<MovieDto> findAllMovies(){
         var movies =  moviesRepository.findAll();
@@ -60,7 +60,9 @@ public class MoviesService {
     }
 
     public Movie addMovie(final MovieDto movieDto) {
-        return moviesRepository.save(movieMapper.mapFromDtoToDomain(movieDto));
+        var movie = movieMapper.mapFromDtoToDomain(movieDto);
+        movie = statusChangerService.updateMovieStatus(movie);
+        return moviesRepository.save(movie);
     }
 
     public void deleteMovie(final Long movieId) {
@@ -75,5 +77,6 @@ public class MoviesService {
         }
         return movieOptional.get();
     }
+
 
 }

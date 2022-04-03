@@ -21,7 +21,7 @@ class MoviesServiceUnitTest {
     @Test
     void displays_movie_page() {
         //given
-        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl());
+        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl(),null);
 
         //when
         var mappedMovie = movieService.findMovieFullDescription(1L);
@@ -40,7 +40,7 @@ class MoviesServiceUnitTest {
     @Test
     void display_movie_tile_for_main_page() {
         //given
-        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl());
+        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl(),null);
 
         //when
         var mappedMovies = movieService.findMoviesForMainPage();

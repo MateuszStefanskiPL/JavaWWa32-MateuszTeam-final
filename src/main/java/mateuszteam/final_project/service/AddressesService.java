@@ -5,7 +5,6 @@ import mateuszteam.final_project.domain.dto.AddressDto;
 import mateuszteam.final_project.domain.entities.Address;
 import mateuszteam.final_project.mapper.UsersMapStructMapper;
 import mateuszteam.final_project.repository.AddressRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

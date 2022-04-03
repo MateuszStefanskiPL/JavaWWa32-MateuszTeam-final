@@ -2,6 +2,7 @@ package mateuszteam.final_project.controller;
 
 import lombok.RequiredArgsConstructor;
 import mateuszteam.final_project.domain.dto.UserDto;
+import mateuszteam.final_project.domain.dto.UserRegistrationDto;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.security.UserSecuredRegistrationService;
 import mateuszteam.final_project.service.UsersService;
