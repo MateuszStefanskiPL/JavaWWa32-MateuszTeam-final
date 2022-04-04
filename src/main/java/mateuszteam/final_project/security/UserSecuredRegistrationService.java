@@ -33,7 +33,7 @@ public class UserSecuredRegistrationService {
     private List<String> userAuthorities(){
         return Arrays.asList("copies:read","addresses:update","addresses:write","addresses:read","addresses:remove",
                 "movies:read","orders:read","orders:write","orders:update",
-                "ratings:read","/cart:read","/users:read","/users:update","/users:write","/users:remove");
+                "ratings:read","/cart:read","/users:read","/users:update","/users:remove");
     }
 
 
