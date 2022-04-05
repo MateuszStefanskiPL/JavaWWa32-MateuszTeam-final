@@ -7,6 +7,7 @@ import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieStatus;
 import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.mapper.MoviesMapStructMapper;
+import mateuszteam.final_project.mapper.MoviesTileMapStructMapper;
 import mateuszteam.final_project.repository.MoviesRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class MoviesService {
 
     private final MoviesRepository moviesRepository;
     private final MoviesMapStructMapper movieMapper;
+    private final MoviesTileMapStructMapper movieTileMapper;
     private final MoviesStatusChangerService statusChangerService;
 
     public List<MovieDto> findAllMovies(){
@@ -41,7 +43,7 @@ public class MoviesService {
         }
         return moviesRepository.findByMovieStatusIn(MS_MAIN_PAGE)
                 .stream()
-                .map(movieMapper::mapFromDomainToTileDto)
+                .map(movieTileMapper::mapFromDomainToDto)
                 .collect(Collectors.toList());
     }
 
@@ -55,7 +57,7 @@ public class MoviesService {
             throw new ResourceNotFoundException("No movies found");
         }
         return moviesRepository.findAllByOrderByAverageScoreDesc().stream()
-                .map(movieMapper::mapFromDomainToTileDto)
+                .map(movieTileMapper::mapFromDomainToDto)
                 .collect(Collectors.toList());
     }
 

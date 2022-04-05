@@ -1,8 +1,10 @@
 package mateuszteam.final_project.service;
+
 import mateuszteam.final_project.domain.entities.Genre;
 import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieStatus;
 import mateuszteam.final_project.mapper.MoviesMapStructMapperImpl;
+import mateuszteam.final_project.mapper.MoviesTileMapStructMapperImpl;
 import mateuszteam.final_project.repository.MoviesRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MoviesServiceUnitTest {
 
@@ -21,7 +22,7 @@ class MoviesServiceUnitTest {
     @Test
     void displays_movie_page() {
         //given
-        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl(),null);
+        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl(),null,null);
 
         //when
         var mappedMovie = movieService.findMovieFullDescription(1L);
@@ -40,7 +41,7 @@ class MoviesServiceUnitTest {
     @Test
     void display_movie_tile_for_main_page() {
         //given
-        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl(),null);
+        var movieService = new MoviesService(getMoviesRepositoryMock(), new MoviesMapStructMapperImpl(),new MoviesTileMapStructMapperImpl(),null);
 
         //when
         var mappedMovies = movieService.findMoviesForMainPage();
