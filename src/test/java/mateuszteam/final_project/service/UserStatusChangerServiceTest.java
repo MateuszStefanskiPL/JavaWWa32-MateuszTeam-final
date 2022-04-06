@@ -1,6 +1,5 @@
 package mateuszteam.final_project.service;
 
-import mateuszteam.final_project.domain.dto.UserDto;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
 import org.junit.jupiter.api.Assertions;
@@ -10,11 +9,7 @@ import java.math.BigDecimal;
 
 class UserStatusChangerServiceTest {
 
-
-    private UserStatusChangerService service = new UserStatusChangerService();
-
-
-    public static final Long USER_ID = 1L;
+    private UserStatusChangerService service = new UserStatusChangerService(null);
 
     @Test
     void should_change_user_status() {

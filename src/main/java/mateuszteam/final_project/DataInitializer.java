@@ -116,7 +116,7 @@ public class DataInitializer implements CommandLineRunner {
                 .starring("To perform at the Crystal Theater, Buster Moon and his crew must find and convince the rock legend to return to the stage.")
                 .movieStatus(MovieStatus.PREMIERE)
                 .numberOfCopies(2)
-                .averageScore(0.0D)
+                .averageScore(8.0D)
                 .build();
 
         var movie3 = Movie.builder()
@@ -127,7 +127,7 @@ public class DataInitializer implements CommandLineRunner {
                 .starring("A social outcast(Johnny Depp) whose parents were executed in the electric chair falls in love with a girl from a good home.")
                 .movieStatus(MovieStatus.CLASSIC)
                 .numberOfCopies(2)
-                .averageScore(0.0D)
+                .averageScore(9.0D)
                 .build();
 
         var copy1 = MovieCopy.builder()
@@ -167,7 +167,7 @@ public class DataInitializer implements CommandLineRunner {
                 .text("I like it")
                 .movie(movie2)
                 .user(user2)
-                .score(10.0D)
+                .score(8.0D)
                 .dateOfEvaluation(LocalDateTime.now().minusDays(2))
                 .build();
 
@@ -175,7 +175,7 @@ public class DataInitializer implements CommandLineRunner {
                 .text("Nice")
                 .movie(movie3)
                 .user(user3)
-                .score(10.0D)
+                .score(9.0D)
                 .dateOfEvaluation(LocalDateTime.now().minusDays(10))
                 .build();
         copiesRepository.saveAll(Arrays.asList(copy1,copy2,copy3,copy4,copy5,copy6));

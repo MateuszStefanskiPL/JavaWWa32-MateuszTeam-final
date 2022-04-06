@@ -32,7 +32,6 @@ public class RatingsService {
         return ratings.stream().map(ratingMapper::mapFromDomainToDto).collect(Collectors.toList());
     }
 
-
     public List<RatingDto> getAllRatingsForSingleMovie(final Long movieId) {
         List<Rating> ratings = ratingsRepository.findRatingsByMovie_MovieId(movieId);
         if (ratings.isEmpty()){

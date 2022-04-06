@@ -6,7 +6,6 @@ import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.mapper.UsersMapStructMapper;
 import mateuszteam.final_project.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor_={@Autowired})
@@ -48,7 +47,7 @@ public class UsersService {
     private User returnUserIfExists(String email){
         var user = usersRepository.findByEmail(email);
         if (user.isEmpty()){
-            throw new ResourceNotFoundException("User ", "id");
+            throw new ResourceNotFoundException("User ", "email");
         }
         return user.get();
     }

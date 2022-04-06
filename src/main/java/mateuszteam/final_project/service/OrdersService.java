@@ -69,7 +69,6 @@ public class OrdersService {
         return ordersMapper.mapFromDomainToDto(saveOrder(cartToOrder));
     }
 
-    //todo--question-- czy ta metoda jest nadal potrzebna?
     User getByEmail(String userEmail) {
         var user = usersRepository.findByEmail(userEmail);  //pozniej via Spring Security
         if(user.isEmpty()) {

@@ -2,14 +2,10 @@ package mateuszteam.final_project.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mateuszteam.final_project.domain.dto.UserDto;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
 import mateuszteam.final_project.domain.events.OrderPlacedEvent;
-import mateuszteam.final_project.mapper.UsersMapStructMapper;
-import mateuszteam.final_project.repository.OrdersRepository;
 import mateuszteam.final_project.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
@@ -20,16 +16,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Service
-public class UserStatusChangerService { //todo: refactor + test analogiczny jak dla MovieChangerService
+public class UserStatusChangerService {
 
     private static final BigDecimal SCORE_FOR_SILVER_STATUS = BigDecimal.valueOf(1000D);
     private static final BigDecimal SCORE_FOR_GOLD_STATUS = BigDecimal.valueOf(5000D);
     private static final BigDecimal SCORE_FOR_PLATINUM_STATUS = BigDecimal.valueOf(10000D);
 
-    private UsersRepository usersRepository;
-    private UsersMapStructMapper mapper;
-    private OrdersRepository ordersRepository;
-
+    private final UsersRepository usersRepository;
 
     public void saveChangedUsers(String userEmail) {
         var user = usersRepository.findByEmail(userEmail).get();
@@ -65,7 +58,7 @@ public class UserStatusChangerService { //todo: refactor + test analogiczny jak 
     }
 
     @EventListener
-    void handleOrderPlacedEvent(OrderPlacedEvent event) throws Exception {
+    public void handleOrderPlacedEvent(OrderPlacedEvent event) throws Exception {
         this.saveChangedUsers(event.getUserEmail());
     }
 
