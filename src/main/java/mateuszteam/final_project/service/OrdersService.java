@@ -70,7 +70,7 @@ public class OrdersService {
     }
 
     //todo--question-- czy ta metoda jest nadal potrzebna?
-    private User getByEmail(String userEmail) {
+    User getByEmail(String userEmail) {
         var user = usersRepository.findByEmail(userEmail);  //pozniej via Spring Security
         if(user.isEmpty()) {
             throw new ResourceNotFoundException(userEmail, "User");

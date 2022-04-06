@@ -1,17 +1,14 @@
 package mateuszteam.final_project.service;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import mateuszteam.final_project.domain.entities.Movie;
 import mateuszteam.final_project.domain.entities.MovieCopy;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.exceptions.CopiesNotFoundException;
 import mateuszteam.final_project.exceptions.DuplicateOrderException;
 import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.repository.MoviesCopiesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -29,7 +26,6 @@ public class SessionCartService {
     private List<Long> movieIds = new ArrayList<>();
 
     private final MoviesCopiesRepository copiesRepository;
-    private final OrderPriceCalculator priceCalculator;
 
     public List<Long> addMovie(Long movieId) {
         if (!movieIds.contains(movieId)) {
@@ -84,9 +80,7 @@ public class SessionCartService {
                 .noneMatch(result -> result.getCopy() == null);
     }
 
-    //todo test it, bo logika operacji na danych jest po stronie JVM a nie bazy danych
-    //albo refactor, wyniesc to 'na gore', albo Mockito.mock(copiesRepository) + when(copiesRepositoryMock.findAllByMovie...).thenReturn(movie)
-    private CopySearchResult getFreeCopyForMovieId(Long movieId) {
+    CopySearchResult getFreeCopyForMovieId(Long movieId) {
         var freeCopy = returnCopyIfAvailableByMovieId(movieId);
         if (freeCopy.isEmpty()){
             return new CopySearchResult(movieId, null);

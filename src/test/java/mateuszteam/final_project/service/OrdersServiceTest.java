@@ -4,6 +4,7 @@ import mateuszteam.final_project.domain.entities.MovieCopy;
 import mateuszteam.final_project.domain.entities.MoviesOrder;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
+import mateuszteam.final_project.exceptions.ResourceNotFoundException;
 import mateuszteam.final_project.mapper.OrdersMapStructMapper;
 import mateuszteam.final_project.repository.OrdersRepository;
 import mateuszteam.final_project.repository.UsersRepository;
@@ -98,5 +99,12 @@ class OrdersServiceTest {
                 .build();
 
         //todo --question-- jak to zrobić?
+    }
+
+    @Test
+    void should_throw_exception_when_wrong_email(){
+        org.junit.jupiter.api.Assertions.assertThrows(ResourceNotFoundException.class, ()->{
+            service.getByEmail("asasasa@asas.as");
+        });
     }
 }
