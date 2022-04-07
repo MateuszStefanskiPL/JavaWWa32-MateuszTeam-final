@@ -9,6 +9,7 @@ import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class UserSecuredRegistrationService {
         var user = usersMapper.mapFromDtoToDomain(userDto);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         user.setUserStatus(UserStatus.NEW_USER);
+        user.setMoneySpent(BigDecimal.valueOf(0.0D));
         user.getAuthoritiesList().addAll(userAuthorities());
 
         return usersRepository.save(user);
