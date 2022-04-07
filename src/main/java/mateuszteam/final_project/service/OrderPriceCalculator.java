@@ -32,8 +32,6 @@ public class OrderPriceCalculator {
         return null;
     }
 
-
-    //todo--question-- tu chyba trzeba obrócić jakąś pętlą żeby policzyło cenę za wszystkie kopie a nie tylko za jedną
     public BigDecimal calculateOrderPricePerDay(MoviesOrder order) {
         var userStatus = order.getUser().getUserStatus();
         var movieStatus = order.getMovieCopies().stream().findFirst().get().getMovie().getMovieStatus();

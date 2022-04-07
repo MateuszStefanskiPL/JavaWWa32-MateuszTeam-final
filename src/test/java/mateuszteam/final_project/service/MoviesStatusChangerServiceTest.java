@@ -48,10 +48,12 @@ class MoviesStatusChangerServiceTest {
         movies.get(2).setReleaseDate(movies.get(2).getReleaseDate().plusYears(31));
 
         var newMovies = moviesStatusChangerService.updateMoviesStatus(movies);
+
         //then
+
         Assertions.assertEquals(MovieStatus.STANDARD,movies.get(0).getMovieStatus());
-        Assertions.assertEquals(MovieStatus.PREMIERE,movies.get(1).getMovieStatus());
-        Assertions.assertEquals(MovieStatus.STANDARD,movies.get(2).getMovieStatus());
+        Assertions.assertEquals(MovieStatus.NEWEST,movies.get(1).getMovieStatus());
+        Assertions.assertEquals(MovieStatus.CLASSIC,movies.get(2).getMovieStatus());
     }
 
 
