@@ -54,10 +54,8 @@ public class UserStatusChangerService {
     }
 
     private void changeStatus(User user, UserStatus status) {
-
         user.setUserStatus(status);
     }
-
 
     @EventListener
     public void handleOrderReturnedEvent(OrderReturnedEvent event) throws Exception {
