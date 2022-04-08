@@ -29,6 +29,7 @@ public class OrdersService {
     private final UsersRepository usersRepository;
     private final OrderPriceCalculator priceCalculator;
     private final ApplicationEventPublisher eventPublisher;
+    private final UsersService usersService;
 
     public MoviesOrderDto showOrderByOrderId(Long orderId) {
         if (ordersRepository.findById(orderId).isEmpty()){
@@ -110,8 +111,17 @@ public class OrdersService {
         var order = getOrderById(orderId);
         order.setOrderStatus(OrderStatus.WAY_BACK);
         order.setTotalPrice(priceCalculator.calculateTotalOrderPrice(order));
+        calculateUsersMoneySpentAfterOrder(order);
         eventPublisher.publishEvent(order);
         return saveOrder(order);
+    }
+
+    private void calculateUsersMoneySpentAfterOrder(MoviesOrder order){
+        usersService.changeUserMoneySpent(getUserFromOrder(order),order.getTotalPrice());
+    }
+
+    private User getUserFromOrder(MoviesOrder order){
+        return order.getUser();
     }
 
     private MoviesOrder getOrderById(Long orderId) {

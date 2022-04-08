@@ -131,6 +131,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.sonarsource.sonarqube</groupId>
+            <artifactId>sonar-plugin-api</artifactId>
+            <version>9.4.0.54424</version>
+        </dependency>
+
 
     </dependencies>
 

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mateuszteam.final_project.domain.entities.User;
 import mateuszteam.final_project.domain.entities.UserStatus;
-import mateuszteam.final_project.domain.events.OrderPlacedEvent;
+import mateuszteam.final_project.domain.events.OrderReturnedEvent;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -54,11 +54,13 @@ public class UserStatusChangerService {
     }
 
     private void changeStatus(User user, UserStatus status) {
+
         user.setUserStatus(status);
     }
 
+
     @EventListener
-    public void handleOrderPlacedEvent(OrderPlacedEvent event) throws Exception {
+    public void handleOrderReturnedEvent(OrderReturnedEvent event) throws Exception {
         this.saveChangedUsers(event.getUserEmail());
     }
 

@@ -8,6 +8,8 @@ import mateuszteam.final_project.mapper.UsersMapStructMapper;
 import mateuszteam.final_project.repository.UsersRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 @Service
 public class UsersService {
@@ -36,6 +38,11 @@ public class UsersService {
         usersRepository.delete(user);
     }
 
+    public User changeUserMoneySpent(User user , BigDecimal moneySpent){
+        user.setMoneySpent(user.getMoneySpent().add(moneySpent));
+        return user;
+    }
+
     private User returnUserIfExists(Long userId){
         var user = usersRepository.findByUserId(userId);
         if (user.isEmpty()){
@@ -51,4 +58,5 @@ public class UsersService {
         }
         return user.get();
     }
+
 }
